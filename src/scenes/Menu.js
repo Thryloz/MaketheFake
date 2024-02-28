@@ -5,6 +5,8 @@ class Menu extends Phaser.Scene{
     }
     preload(){
         this.load.bitmapFont('gem', './assets/gem.png', './assets/gem.xml'); // yoinked from example
+
+        this.load.image('tap', './assets/tap.png')
     }
 
     create(){
