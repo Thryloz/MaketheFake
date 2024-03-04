@@ -15,11 +15,12 @@ class Play extends Phaser.Scene{
         perfectZone = this.add.rectangle(visibleZone.x, visibleZone.y, game.config.width, 40, 0xA020F0, 0)
         goodZone = this.add.rectangle(visibleZone.x, visibleZone.y, game.config.width, 70, 0xA02AF0, 0)
         badZone = this.add.rectangle(visibleZone.x, visibleZone.y, game.config.width, 100, 0xAAAAF0, 0)
+        missZone = this.add.rectangle(visibleZone.x, visibleZone.y, game.config.width, 150, 0xAAAAF0, 0.5)
 
-        keyOne = this.add.image(game.config.width/4, game.config.height-100, "tap").setAlpha(0).setScale(3);
-        keyTwo =  this.add.image(game.config.width/4 + ((game.config.width - (game.config.width/4))-width/4)/3, game.config.height-100, "tap").setAlpha(0).setScale(3);
-        keyThree = this.add.image(game.config.width/4 + ((game.config.width - (game.config.width/4))-width/4)/3 * 2, game.config.height-100, "tap").setAlpha(0).setScale(3);
-        keyFour = this.add.image(game.config.width - (game.config.width/4), game.config.height-100, "tap").setAlpha(0).setScale(3);
+        keyOne = this.add.image(LANE_ONE, game.config.height-100, "tap").setAlpha(0).setScale(3);
+        keyTwo =  this.add.image(LANE_TWO, game.config.height-100, "tap").setAlpha(0).setScale(3);
+        keyThree = this.add.image(LANE_THREE, game.config.height-100, "tap").setAlpha(0).setScale(3);
+        keyFour = this.add.image(LANE_FOUR, game.config.height-100, "tap").setAlpha(0).setScale(3);
 
 
         timeBetweenNotes = 200
@@ -36,6 +37,8 @@ class Play extends Phaser.Scene{
             },
             loop: true
         })
+
+        
     }
 
     addNote() {
@@ -44,7 +47,7 @@ class Play extends Phaser.Scene{
     }
 
     update(){
-        let firstNote = this.noteGroup.getFirst(clickableState = true); // gets the first note in the group
+
 
         if (Phaser.Input.Keyboard.JustDown(keyFIRST)){
             this.tweens.add({
@@ -54,7 +57,11 @@ class Play extends Phaser.Scene{
                 duration: 450,
                 repeat: 0,
             });
-    
+            var laneOneNote = Phaser.Actions.GetFirst(this.noteGroup.getChildren(), {x: LANE_ONE} )
+
+            if (laneOneNote != null){
+                
+            }
         }
         if (Phaser.Input.Keyboard.JustDown(keySECOND)){
             this.tweens.add({
@@ -64,6 +71,7 @@ class Play extends Phaser.Scene{
                 duration: 450,
                 repeat: 0,
             });
+            var laneTwoNote = Phaser.Actions.GetFirst(this.noteGroup.getChildren(), {x: LANE_TWO} )
     
         }
         if (Phaser.Input.Keyboard.JustDown(keyTHIRD)){
@@ -74,6 +82,7 @@ class Play extends Phaser.Scene{
                 duration: 450,
                 repeat: 0,
             });
+            var laneThreeNote = Phaser.Actions.GetFirst(this.noteGroup.getChildren(), {x: LANE_THREE} )
             
         }
         if (Phaser.Input.Keyboard.JustDown(keyFOURTH)){
@@ -84,7 +93,8 @@ class Play extends Phaser.Scene{
                 duration: 450,
                 repeat: 0,
             });
-        
+            var laneFourNote = Phaser.Actions.GetFirst(this.noteGroup.getChildren(), {x: LANE_FOUR} )
+
         }
 
     }

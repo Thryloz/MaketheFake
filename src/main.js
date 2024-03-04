@@ -29,10 +29,14 @@ let height = game.config.height;
 let borderUISize = game.config.height / 15
 let borderPadding = borderUISize / 3
 
+let LANE_ONE = game.config.width/4
+let LANE_TWO = game.config.width/4 + ((game.config.width - (game.config.width/4))-width/4)/3
+let LANE_THREE = game.config.width/4 + ((game.config.width - (game.config.width/4))-width/4)/3 * 2
+let LANE_FOUR = game.config.width - (game.config.width/4)
+
 let scenePaused = false
 
 let keyENTER, keySPACE, keyESC, keyFIRST, keySECOND, keyTHIRD, keyFOURTH
 let visibleZone, excellentZone, perfectZone, goodZone, badZone, missZone
 let keyOne, keyTwo, keyThree, keyFour
-let clickableState
 let timeBetweenNotes
