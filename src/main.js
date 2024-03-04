@@ -38,5 +38,6 @@ let scenePaused = false
 
 let keyENTER, keySPACE, keyESC, keyFIRST, keySECOND, keyTHIRD, keyFOURTH
 let visibleZone, excellentZone, perfectZone, goodZone, badZone, missZone
+let excellentTEXT, perfectTEXT, goodTEXT, badTEXT, missTEXT
 let keyOne, keyTwo, keyThree, keyFour
 let timeBetweenNotes
