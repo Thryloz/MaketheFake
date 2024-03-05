@@ -9,15 +9,9 @@ let config = {
     scale: {
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
-    physics: {
-        default: 'arcade',
-        arcade:{
-            //debug: true,
-            gravity: {
-                x:0,
-                y:0
-            },
-        }
+    fps: {
+        forceSetTimeOut: true,
+        target: 60
     },
     scene: [ Play, Menu, Credits, ]
 }
@@ -36,8 +30,12 @@ let LANE_FOUR = game.config.width - (game.config.width/4)
 
 let scenePaused = false
 
-let keyENTER, keySPACE, keyESC, keyFIRST, keySECOND, keyTHIRD, keyFOURTH
+let keyENTER, keySPACE, keyESC, keyTAB, keyFIRST, keySECOND, keyTHIRD, keyFOURTH
 let visibleZone, excellentZone, perfectZone, goodZone, badZone, missZone
 let excellentTEXT, perfectTEXT, goodTEXT, badTEXT, missTEXT
 let keyOne, keyTwo, keyThree, keyFour
 let timeBetweenNotes
+let chargeUI
+let noteSpawning
+let speedControlPanel
+let speed
