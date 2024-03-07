@@ -35,7 +35,13 @@ let visibleZone, excellentZone, perfectZone, goodZone, badZone, missZone
 let excellentTEXT, perfectTEXT, goodTEXT, badTEXT, missTEXT
 let keyOne, keyTwo, keyThree, keyFour
 let timeBetweenNotes
-let chargeUI
+let chargeUI, fill_bar
+let charge_level
+let excellentCHARGE = 15
+let perfectCHARGE = 10
+let goodCHARGE = 5
+let badCHARGE = -2
+let missCHARGE = -5
 let noteSpawning
 let speedControlPanel
 let speed

@@ -14,6 +14,9 @@ class Note extends Phaser.Physics.Arcade.Sprite {
         this.y += this.speed
 
         if(this.y > game.config.height) {
+            if (charge_level > 0){
+                charge_level += missCHARGE
+            }
             this.destroy();
         }
 
