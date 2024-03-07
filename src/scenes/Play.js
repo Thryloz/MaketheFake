@@ -13,6 +13,8 @@ class Play extends Phaser.Scene{
         this.load.image('bluenoteclick_center', './assets/bluenoteclick_center.png')
         this.load.image('bluenoteclick_inner', './assets/bluenoteclick_inner.png')
         this.load.image('bluenoteclick_outer', './assets/bluenoteclick_outer.png')
+        this.load.image('bullet_active', './assets/bullet_active.png')
+        this.load.image('bullet_inactive', './assets/bullet_inactive.png')
     }
 
     create(){
@@ -22,6 +24,8 @@ class Play extends Phaser.Scene{
         keySECOND = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S)
         keyTHIRD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SEMICOLON)
         keyFOURTH = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.QUOTES)
+        keySHIFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT)
+        keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
 
         this.background = this.add.image(width/2, height/2, 'background')
 
@@ -51,27 +55,32 @@ class Play extends Phaser.Scene{
         this.keyFourInner = this.add.image(LANE_FOUR, game.config.height-80, "bluenoteclick_inner").setAlpha(0).setScale(0.5)
         this.keyFourOuter = this.add.image(LANE_FOUR, game.config.height-80, "bluenoteclick_outer").setAlpha(0).setScale(0.5)
 
-
+        // speed control panel
         this.speedControlPanel = this.add.rectangle(width/2, height/2, width/2, height/2, 0x301934, 1).setStrokeStyle(2, 0xA020F0, 1)
         this.speedControlPanel.setVisible(false)
         this.speedControlPanel.setDepth(3)
-
         this.speedTEXTbackground = this.add.rectangle(width/2, height/2 - 40, 50, 65, 0x887191, 1).setStrokeStyle(2, 0xA020F0, 1).setVisible(false)
         this.speedTEXTbackground.setDepth(4)
-
-
         this.speedTEXT = this.add.bitmapText(width/2, height/2 - 40, 'gem', speed, 50).setOrigin(0.5).setTint(0xFFFFFF).setVisible(false)
         this.speedTEXT.setDepth(5)
-
-        
-
-
-        //chargeUI = new CannonSystem(this, game.config.width-100, game.config.height/2, 'charge_level_ui', 1)
 
         // https://newdocs.phaser.io/docs/3.60.0/Phaser.GameObjects.NineSlice#setSize
         chargeUI = this.add.nineslice(game.config.width-70, game.config.height/2 - 50, 'charge_level_ui', 0, 50)
         fill_bar = this.add.nineslice(game.config.width-70, 425, 'fill_bar', 0, 40, 0, 6, 6, 6, 6).setOrigin(0.5, 0).setRotation(Math.PI)
         charge_level = 0;
+
+        // bullet handling
+        bulletCount = 0
+        this.bullet3_inactive = this.add.image(70, 275, 'bullet_inactive', 0).setScale(0.5)
+        this.bullet2_inactive = this.add.image(70, 350, 'bullet_inactive', 0).setScale(0.5)
+        this.bullet1_inactive = this.add.image(70, 425, 'bullet_inactive', 0).setScale(0.5)
+        
+        this.bullet3_active = this.add.image(70, 275, 'bullet_active', 0).setScale(0.5).setVisible(false)
+        this.bullet2_active = this.add.image(70, 350, 'bullet_active', 0).setScale(0.5).setVisible(false)
+        this.bullet1_active = this.add.image(70, 425, 'bullet_active', 0).setScale(0.5).setVisible(false)
+
+        //reticle
+        this.reticle = this.add.image(width/2, height/2, 'reticle')
 
         this.noteGroup = this.add.group({
             runChildUpdate: true    
@@ -110,29 +119,64 @@ class Play extends Phaser.Scene{
                 scenePaused = false;
             }
         }
-        console.log(charge_level)
-        if (charge_level > 0){
+
+        if (Phaser.Input.Keyboard.JustDown(keySHIFT) && bulletCount > 0){
+            if (!aimMode){
+                this.noteSpawning.paused = true
+                aimMode = true
+            } else {
+                this.noteSpawning.paused = false
+                aimMode = false
+            }
+        }
+
+
+        if (charge_level > 0 && (charge_level < 120)){
             fill_bar.height = charge_level * 2
         }
 
         if (charge_level > 100){
-            charge_level = 0
+            if (bulletCount == 3){
+                charge_level = 116
+            } else {
+                bulletCount++;
+                charge_level = 0
+                fill_bar.height = charge_level
+                switch(bulletCount){
+                    case 3:
+                        this.bullet3_active.setVisible(true)
+                        this.bullet3_inactive.setVisible(false)
+                    case 2:
+                        this.bullet2_active.setVisible(true)
+                        this.bullet2_inactive.setVisible(false)
+                    case 1:
+                        this.bullet1_active.setVisible(true)
+                        this.bullet1_inactive.setVisible(false)
+                }
+            }
         } else if (charge_level < 0){
             charge_level = 0
         }
 
+        
 
         //console.log(this.noteSpawning.delay)
         if(scenePaused){
             Phaser.Actions.Call(this.noteGroup.getChildren(), (note) => note.speed = 0.1)
             if (Phaser.Input.Keyboard.JustDown(keyFIRST) && speed > 1){
                 speed--;
-                this.noteSpawning.delay = -369.1503 * Math.log(0.0666085*speed)
             } else if (Phaser.Input.Keyboard.JustDown(keyFOURTH) && speed < 10){
                 speed++;
-                this.noteSpawning.delay = -369.1503 * Math.log(0.0666085*speed)
             }
+            this.noteSpawning.delay = -369.1503 * Math.log(0.0666085*speed)
             this.speedTEXT.setText(speed)
+        } else if(aimMode){
+            Phaser.Actions.Call(this.noteGroup.getChildren(), (note) => note.speed = 0.1)
+            if (Phaser.Input.Keyboard.JustDown(keySPACE) && speed > 1){
+                bulletCount--;
+                aimMode = false
+                this.noteSpawning.paused = false
+            }
         } else {
             Phaser.Actions.Call(this.noteGroup.getChildren(), (note) => note.speed = speed*2)
             if (Phaser.Input.Keyboard.JustDown(keyFIRST)){
