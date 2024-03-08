@@ -19,6 +19,12 @@ class Play extends Phaser.Scene{
 
     create(){
         speed = 5
+        maxCombo = 0
+        excellentCOUNT = 0
+        perfectCOUNT = 0
+        goodCOUNT = 0
+        badCOUNT = 0
+        missCOUNT = 0
         keyTAB = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TAB)
         keyFIRST = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A)
         keySECOND = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S)
@@ -26,6 +32,14 @@ class Play extends Phaser.Scene{
         keyFOURTH = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.QUOTES)
         keySHIFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT)
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
+        keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W)
+        keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
+
+
+        keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT)
+        keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT)
+        keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP)
+        keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN)
 
         this.background = this.add.image(width/2, height/2, 'background')
 
@@ -39,11 +53,11 @@ class Play extends Phaser.Scene{
         badZone = this.add.rectangle(visibleZone.x, visibleZone.y, game.config.width, 100, 0xAAAAF0, 0)
         missZone = this.add.rectangle(visibleZone.x, visibleZone.y, game.config.width, 150, 0xAAAAF0, 0)
 
-        excellentTEXT = this.add.bitmapText(width/2, visibleZone.y-150, 'gem', 'EXCELLENT', 50).setOrigin(0.5).setTint(0xFFFFFF).setAlpha(0);
-        perfectTEXT = this.add.bitmapText(width/2, visibleZone.y-150, 'gem', 'PERFECT', 50).setOrigin(0.5).setTint(0xFFFFFF).setAlpha(0);
-        goodTEXT = this.add.bitmapText(width/2, visibleZone.y-150, 'gem', 'GOOD', 50).setOrigin(0.5).setTint(0xFFFFFF).setAlpha(0);
-        badTEXT = this.add.bitmapText(width/2, visibleZone.y-150, 'gem', 'BAD', 50).setOrigin(0.5).setTint(0xFFFFFF).setAlpha(0);
-        missTEXT = this.add.bitmapText(width/2, visibleZone.y-150, 'gem', 'MISS', 50).setOrigin(0.5).setTint(0xFFFFFF).setAlpha(0);
+        excellentTEXT = this.add.bitmapText(width/2, visibleZone.y-150, 'gem', 'EXCELLENT', 50).setOrigin(0.5).setTint(0xFFFFFF).setAlpha(0).setDepth(5);
+        perfectTEXT = this.add.bitmapText(width/2, visibleZone.y-150, 'gem', 'PERFECT', 50).setOrigin(0.5).setTint(0xFFFFFF).setAlpha(0).setDepth(5);
+        goodTEXT = this.add.bitmapText(width/2, visibleZone.y-150, 'gem', 'GOOD', 50).setOrigin(0.5).setTint(0xFFFFFF).setAlpha(0).setDepth(5);
+        badTEXT = this.add.bitmapText(width/2, visibleZone.y-150, 'gem', 'BAD', 50).setOrigin(0.5).setTint(0xFFFFFF).setAlpha(0).setDepth(5);
+        missTEXT = this.add.bitmapText(width/2, visibleZone.y-150, 'gem', 'MISS', 50).setOrigin(0.5).setTint(0xFFFFFF).setAlpha(0).setDepth(5);
 
         this.keyOneCenter = this.add.image(LANE_ONE, game.config.height-80, "bluenoteclick_center").setAlpha(0).setScale(0.5)
         this.keyOneInner = this.add.image(LANE_ONE, game.config.height-80, "bluenoteclick_inner").setAlpha(0).setScale(0.5)
@@ -160,6 +174,8 @@ class Play extends Phaser.Scene{
                 repeat: 0,
             });
             charge_level += excellentCHARGE
+            combo++
+            excellentCOUNT++
             note.destroy()
         } else if ((note.y > visibleZone.y-40 && note.y < visibleZone.y + 15) || (note.y < visibleZone.y+40 && note.y > visibleZone.y+15)){
             this.tweens.add({
@@ -171,6 +187,8 @@ class Play extends Phaser.Scene{
                 repeat: 0,
             });
             charge_level += perfectCHARGE
+            combo++
+            perfectCOUNT++
             note.destroy()
         } else if ((note.y > visibleZone.y-70 && note.y < visibleZone.y + 40)|| (note.y < visibleZone.y+70 && note.y > visibleZone.y+40)){
             this.tweens.add({
@@ -182,6 +200,8 @@ class Play extends Phaser.Scene{
                 repeat: 0,
             });
             charge_level += goodCHARGE
+            combo++
+            goodCOUNT++
             note.destroy()
         } else if ((note.y > visibleZone.y-100 && note.y < visibleZone.y + 70) || (note.y < visibleZone.y+100 && note.y > visibleZone.y+70)){
             this.tweens.add({
@@ -193,6 +213,8 @@ class Play extends Phaser.Scene{
                 repeat: 0,
             });
             charge_level += badCHARGE
+            combo = 0
+            badCOUNT++
             note.destroy()
         } else if ((note.y > visibleZone.y-150 && note.y < visibleZone.y + 100) || note.y > visibleZone.y+150){
             this.tweens.add({
@@ -204,12 +226,19 @@ class Play extends Phaser.Scene{
                 repeat: 0,
             });
             charge_level += missCHARGE
+            combo = 0
+            missCOUNT++ 
             note.destroy()
         } 
+        if (combo > maxCombo){
+            maxCombo = combo
+        }
     }
 
     update(){
         // 15 40 70 100 150
+
+
         if (Phaser.Input.Keyboard.JustDown(keyTAB)){
             if (!scenePaused){
                 this.noteSpawning.paused = true
@@ -221,7 +250,9 @@ class Play extends Phaser.Scene{
                 })
                 scenePaused = true;
             } else {
-                this.noteSpawning.paused = false
+                if (!aimMode){
+                    this.noteSpawning.paused = false
+                }
                 this.add.tween({
                     targets: [this.speedControlPanel, this.speedTEXT, this.speedTEXTbackground],
                     scale: {from: 1, to: 0},
@@ -282,19 +313,19 @@ class Play extends Phaser.Scene{
         } else if(aimMode){
             Phaser.Actions.Call(this.noteGroup.getChildren(), (note) => note.speed = 0.1)
 
-            if (keyFIRST.isDown){
+            if (keyW.isDown || keyUP.isDown){
                 this.reticle.y -= 5
             }
 
-            if (keySECOND.isDown){
+            if (keySECOND.isDown || keyDOWN.isDown){
                 this.reticle.y += 5
             }
 
-            if (keyTHIRD.isDown){
+            if (keyFIRST.isDown || keyLEFT.isDown){
                 this.reticle.x -= 5
             }
 
-            if (keyFOURTH.isDown){
+            if (keyD.isDown || keyRIGHT.isDown){
                 this.reticle.x += 5
             }
 
@@ -348,6 +379,10 @@ class Play extends Phaser.Scene{
                     this.noteJudgement(laneFourNote)
                 }
             }
+        }
+
+        if (gameOver){
+            this.scene.start('scoreScreenScene')
         }
     }
 }

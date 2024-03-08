@@ -13,7 +13,7 @@ let config = {
         forceSetTimeOut: true,
         target: 60
     },
-    scene: [ Play, Menu, Credits, ]
+    scene: [ Play, Menu, Credits, ScoreScreen]
 }
 
 let game = new Phaser.Game(config);
@@ -31,7 +31,7 @@ let LANE_FOUR = game.config.width - (game.config.width/4)
 let scenePaused = false
 let aimMode = false
 
-let keySHIFT, keySPACE, keyESC, keyTAB, keyFIRST, keySECOND, keyTHIRD, keyFOURTH, keyLEFT, keyRIGHT, keyUP, keyDOWN
+let keySHIFT, keySPACE, keyESC, keyTAB, keyFIRST, keySECOND, keyTHIRD, keyFOURTH, keyLEFT, keyRIGHT, keyUP, keyDOWN, keyW, keyD
 let visibleZone, excellentZone, perfectZone, goodZone, badZone, missZone
 let excellentTEXT, perfectTEXT, goodTEXT, badTEXT, missTEXT
 let keyOne, keyTwo, keyThree, keyFour
@@ -45,6 +45,14 @@ let perfectCHARGE = 10
 let goodCHARGE = 5
 let badCHARGE = -2
 let missCHARGE = -5
+
+let combo = 0
+let maxCombo = 0
+let excellentCOUNT = 0
+let perfectCOUNT = 0
+let goodCOUNT = 0
+let badCOUNT = 0
+let missCOUNT = 0
 
 let bulletCount = 0
 
