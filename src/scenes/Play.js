@@ -29,7 +29,10 @@ class Play extends Phaser.Scene{
 
         this.background = this.add.image(width/2, height/2, 'background')
 
-        visibleZone = this.add.rectangle(game.config.width/2, game.config.height-80, game.config.width, 2, 0xFF0000, 0.5)
+        this.leftRect = this.add.rectangle(150, height/2, 2, game.config.height, 0xFF0000, 0.5)
+        this.rightRect = this.add.rectangle(930, height/2, 2, game.config.height, 0xFF0000, 0.5)
+
+        visibleZone = this.add.rectangle(game.config.width/2, game.config.height-150, game.config.width, 2, 0xFF0000, 0.5)
         excellentZone = this.add.rectangle(visibleZone.x, visibleZone.y, game.config.width, 15, 0x4169E1, 0)
         perfectZone = this.add.rectangle(visibleZone.x, visibleZone.y, game.config.width, 40, 0xA020F0, 0)
         goodZone = this.add.rectangle(visibleZone.x, visibleZone.y, game.config.width, 70, 0xA02AF0, 0)
@@ -56,12 +59,11 @@ class Play extends Phaser.Scene{
         this.keyFourOuter = this.add.image(LANE_FOUR, game.config.height-80, "bluenoteclick_outer").setAlpha(0).setScale(0.5)
 
         // speed control panel
-        this.speedControlPanel = this.add.rectangle(width/2, height/2, width/2, height/2, 0x301934, 1).setStrokeStyle(2, 0xA020F0, 1)
-        this.speedControlPanel.setVisible(false)
+        this.speedControlPanel = this.add.rectangle(width/2, height/2, width/2, height/2, 0x301934, 1).setStrokeStyle(2, 0xA020F0, 1).setScale(0)
         this.speedControlPanel.setDepth(3)
-        this.speedTEXTbackground = this.add.rectangle(width/2, height/2 - 40, 50, 65, 0x887191, 1).setStrokeStyle(2, 0xA020F0, 1).setVisible(false)
+        this.speedTEXTbackground = this.add.rectangle(width/2, height/2 - 40, 50, 65, 0x887191, 1).setStrokeStyle(2, 0xA020F0, 1).setScale(0)
         this.speedTEXTbackground.setDepth(4)
-        this.speedTEXT = this.add.bitmapText(width/2, height/2 - 40, 'gem', speed, 50).setOrigin(0.5).setTint(0xFFFFFF).setVisible(false)
+        this.speedTEXT = this.add.bitmapText(width/2, height/2 - 40, 'gem', speed, 50).setOrigin(0.5).setTint(0xFFFFFF).setScale(0)
         this.speedTEXT.setDepth(5)
 
         // https://newdocs.phaser.io/docs/3.60.0/Phaser.GameObjects.NineSlice#setSize
@@ -86,6 +88,7 @@ class Play extends Phaser.Scene{
             runChildUpdate: true    
         });
 
+
         this.noteSpawning = this.time.addEvent({
             delay: -369.1503 * Math.log(0.0666085*speed),
             callback: () => {
@@ -94,7 +97,23 @@ class Play extends Phaser.Scene{
             loop: true
         })
 
+        this.enemyGroup = this.add.group({
+            runChildUpdate: true
+        })
+
+        this.enemySpawning = this.time.addEvent({
+            delay: 5000,
+            callback: () => {
+                this.addEnemy()
+            },
+            loop: true
+        })
         
+    }
+
+    addEnemy(){
+        let enemy = new Enemy(this, 'enemy', 0, 1)
+        this.enemyGroup.add(enemy)
     }
 
     addNote() {
@@ -102,20 +121,113 @@ class Play extends Phaser.Scene{
         this.noteGroup.add(note)
     }
 
+    clickTween(center, inner, outer){
+        this.tweens.add({
+            targets: center,
+            alpha: { from: 1, to: 0},
+            scale: { from: 0.5, to: 0},
+            ease: 'Sine.InOut',
+            duration: 250,
+            repeat: 0,
+        });
+        this.tweens.add({
+            targets: inner,
+            alpha: { from: 1, to: 0},
+            scale: { from: 0.5, to: 0.51},
+            ease: 'Sine.InOut',
+            duration: 800,
+            repeat: 0,
+        });
+        this.tweens.add({
+            targets: outer,
+            ease: 'Bounce.InOut',
+            alpha: { from: 1, to: 0},
+            ease: 'Sine.InOut',
+            scale: { from: 0.5, to: 0.55},
+            duration: 350,
+            repeat: 0,
+        });
+    }
+
+    noteJudgement(note){
+        if ((note.y > visibleZone.y-15 && note.y < visibleZone.y) || (note.y < visibleZone.y+ 15 && note.y > visibleZone.y)){
+            this.tweens.add({
+                targets: excellentTEXT,
+                scale: {from: 1, to: 1.2},
+                alpha: { from: 1, to: 0},
+                ease: 'Elastic.InOut',
+                duration: 350,
+                repeat: 0,
+            });
+            charge_level += excellentCHARGE
+            note.destroy()
+        } else if ((note.y > visibleZone.y-40 && note.y < visibleZone.y + 15) || (note.y < visibleZone.y+40 && note.y > visibleZone.y+15)){
+            this.tweens.add({
+                targets: perfectTEXT,
+                scale: {from: 1, to: 1.2},
+                alpha: { from: 1, to: 0},
+                ease: 'Elastic.InOut',
+                duration: 350,
+                repeat: 0,
+            });
+            charge_level += perfectCHARGE
+            note.destroy()
+        } else if ((note.y > visibleZone.y-70 && note.y < visibleZone.y + 40)|| (note.y < visibleZone.y+70 && note.y > visibleZone.y+40)){
+            this.tweens.add({
+                targets: goodTEXT,
+                scale: {from: 1, to: 1.2},
+                alpha: { from: 1, to: 0},
+                ease: 'Elastic.InOut',
+                duration: 350,
+                repeat: 0,
+            });
+            charge_level += goodCHARGE
+            note.destroy()
+        } else if ((note.y > visibleZone.y-100 && note.y < visibleZone.y + 70) || (note.y < visibleZone.y+100 && note.y > visibleZone.y+70)){
+            this.tweens.add({
+                targets: badTEXT,
+                scale: {from: 1, to: 1.2},
+                alpha: { from: 1, to: 0},
+                ease: 'Elastic.InOut',
+                duration: 350,
+                repeat: 0,
+            });
+            charge_level += badCHARGE
+            note.destroy()
+        } else if ((note.y > visibleZone.y-150 && note.y < visibleZone.y + 100) || note.y > visibleZone.y+150){
+            this.tweens.add({
+                targets: missTEXT,
+                scale: {from: 1, to: 1.2},
+                alpha: { from: 1, to: 0},
+                ease: 'Elastic.InOut',
+                duration: 350,
+                repeat: 0,
+            });
+            charge_level += missCHARGE
+            note.destroy()
+        } 
+    }
+
     update(){
         // 15 40 70 100 150
         if (Phaser.Input.Keyboard.JustDown(keyTAB)){
             if (!scenePaused){
                 this.noteSpawning.paused = true
-                this.speedControlPanel.setVisible(true)
-                this.speedTEXT.setVisible(true)
-                this.speedTEXTbackground.setVisible(true)
+                this.add.tween({
+                    targets: [this.speedControlPanel, this.speedTEXT, this.speedTEXTbackground],
+                    scale: {from: 0, to: 1},
+                    duration: 100,
+                    ease: 'linear'
+                })
                 scenePaused = true;
             } else {
                 this.noteSpawning.paused = false
-                this.speedControlPanel.setVisible(false)
-                this.speedTEXT.setVisible(false)
-                this.speedTEXTbackground.setVisible(false)
+                this.add.tween({
+                    targets: [this.speedControlPanel, this.speedTEXT, this.speedTEXTbackground],
+                    scale: {from: 1, to: 0},
+                    duration: 100,
+                    ease: 'linear'
+                })
                 scenePaused = false;
             }
         }
@@ -158,9 +270,6 @@ class Play extends Phaser.Scene{
             charge_level = 0
         }
 
-        
-
-        //console.log(this.noteSpawning.delay)
         if(scenePaused){
             Phaser.Actions.Call(this.noteGroup.getChildren(), (note) => note.speed = 0.1)
             if (Phaser.Input.Keyboard.JustDown(keyFIRST) && speed > 1){
@@ -172,295 +281,73 @@ class Play extends Phaser.Scene{
             this.speedTEXT.setText(speed)
         } else if(aimMode){
             Phaser.Actions.Call(this.noteGroup.getChildren(), (note) => note.speed = 0.1)
-            if (Phaser.Input.Keyboard.JustDown(keySPACE) && speed > 1){
+
+            if (keyFIRST.isDown){
+                this.reticle.y -= 5
+            }
+
+            if (keySECOND.isDown){
+                this.reticle.y += 5
+            }
+
+            if (keyTHIRD.isDown){
+                this.reticle.x -= 5
+            }
+
+            if (keyFOURTH.isDown){
+                this.reticle.x += 5
+            }
+
+
+            if (Phaser.Input.Keyboard.JustDown(keySPACE)){
                 bulletCount--;
                 aimMode = false
                 this.noteSpawning.paused = false
+                switch(bulletCount) {
+                    case 2:
+                        this.bullet3_active.setVisible(false)
+                        this.bullet3_inactive.setVisible(true)
+                        break
+                    case 1:
+                        this.bullet2_active.setVisible(false)
+                        this.bullet2_inactive.setVisible(true)
+                        break
+                    case 0:
+                        this.bullet1_active.setVisible(false)
+                        this.bullet1_inactive.setVisible(true)
+                        break
+                }
             }
         } else {
             Phaser.Actions.Call(this.noteGroup.getChildren(), (note) => note.speed = speed*2)
             if (Phaser.Input.Keyboard.JustDown(keyFIRST)){
                 this.clickTween(this.keyOneCenter, this.keyOneInner, this.keyOneOuter)
                 var laneOneNote = Phaser.Actions.GetFirst(this.noteGroup.getChildren(), {x: LANE_ONE} )
-
                 if (laneOneNote != null){
-                    if ((laneOneNote.y > visibleZone.y-15 && laneOneNote.y < visibleZone.y) || (laneOneNote.y < visibleZone.y+ 15 && laneOneNote.y > visibleZone.y)){
-                        this.tweens.add({
-                            targets: excellentTEXT,
-                            scale: {from: 1, to: 1.2},
-                            alpha: { from: 1, to: 0},
-                            ease: 'Elastic.InOut',
-                            duration: 350,
-                            repeat: 0,
-                        });
-                        charge_level += excellentCHARGE
-                        laneOneNote.destroy()
-                    } else if ((laneOneNote.y > visibleZone.y-40 && laneOneNote.y < visibleZone.y + 15) || (laneOneNote.y < visibleZone.y+40 && laneOneNote.y > visibleZone.y+15)){
-                        this.tweens.add({
-                            targets: perfectTEXT,
-                            scale: {from: 1, to: 1.2},
-                            alpha: { from: 1, to: 0},
-                            ease: 'Elastic.InOut',
-                            duration: 350,
-                            repeat: 0,
-                        });
-                        charge_level += perfectCHARGE
-                        laneOneNote.destroy()
-                    } else if ((laneOneNote.y > visibleZone.y-70 && laneOneNote.y < visibleZone.y + 40)|| (laneOneNote.y < visibleZone.y+70 && laneOneNote.y > visibleZone.y+40)){
-                        this.tweens.add({
-                            targets: goodTEXT,
-                            scale: {from: 1, to: 1.2},
-                            alpha: { from: 1, to: 0},
-                            ease: 'Elastic.InOut',
-                            duration: 350,
-                            repeat: 0,
-                        });
-                        charge_level += goodCHARGE
-                        laneOneNote.destroy()
-                    } else if ((laneOneNote.y > visibleZone.y-100 && laneOneNote.y < visibleZone.y + 70) || (laneOneNote.y < visibleZone.y+100 && laneOneNote.y > visibleZone.y+70)){
-                        this.tweens.add({
-                            targets: badTEXT,
-                            scale: {from: 1, to: 1.2},
-                            alpha: { from: 1, to: 0},
-                            ease: 'Elastic.InOut',
-                            duration: 350,
-                            repeat: 0,
-                        });
-                        charge_level += badCHARGE
-                        laneOneNote.destroy()
-                    } else if ((laneOneNote.y > visibleZone.y-150 && laneOneNote.y < visibleZone.y + 100) || laneOneNote.y > visibleZone.y+150){
-                        this.tweens.add({
-                            targets: missTEXT,
-                            scale: {from: 1, to: 1.2},
-                            alpha: { from: 1, to: 0},
-                            ease: 'Elastic.InOut',
-                            duration: 350,
-                            repeat: 0,
-                        });
-                        charge_level += missCHARGE
-                        laneOneNote.destroy()
-                    } 
+                    this.noteJudgement(laneOneNote)
                 }
             }
             if (Phaser.Input.Keyboard.JustDown(keySECOND)){
                 this.clickTween(this.keyTwoCenter, this.keyTwoInner, this.keyTwoOuter)
                 var laneTwoNote = Phaser.Actions.GetFirst(this.noteGroup.getChildren(), {x: LANE_TWO} )
-                
                 if (laneTwoNote != null){
-                    if ((laneTwoNote.y > visibleZone.y-15 && laneTwoNote.y < visibleZone.y) || (laneTwoNote.y < visibleZone.y+ 15 && laneTwoNote.y > visibleZone.y)){
-                        this.tweens.add({
-                            targets: excellentTEXT,
-                            scale: {from: 1, to: 1.2},
-                            alpha: { from: 1, to: 0},
-                            ease: 'Elastic.InOut',
-                            duration: 350,
-                            repeat: 0,
-                        });
-                        charge_level += excellentCHARGE
-                        laneTwoNote.destroy()
-                    } else if ((laneTwoNote.y > visibleZone.y-40 && laneTwoNote.y < visibleZone.y + 15) || (laneTwoNote.y < visibleZone.y+40 && laneTwoNote.y > visibleZone.y+15)){
-                        this.tweens.add({
-                            targets: perfectTEXT,
-                            scale: {from: 1, to: 1.2},
-                            alpha: { from: 1, to: 0},
-                            ease: 'Elastic.InOut',
-                            duration: 350,
-                            repeat: 0,
-                        });
-                        charge_level += perfectCHARGE
-                        laneTwoNote.destroy()
-                    } else if ((laneTwoNote.y > visibleZone.y-70 && laneTwoNote.y < visibleZone.y + 40)|| (laneTwoNote.y < visibleZone.y+70 && laneTwoNote.y > visibleZone.y+40)){
-                        this.tweens.add({
-                            targets: goodTEXT,
-                            scale: {from: 1, to: 1.2},
-                            alpha: { from: 1, to: 0},
-                            ease: 'Elastic.InOut',
-                            duration: 350,
-                            repeat: 0,
-                        });
-                        charge_level += goodCHARGE
-                        laneTwoNote.destroy()
-                    } else if ((laneTwoNote.y > visibleZone.y-100 && laneTwoNote.y < visibleZone.y + 70) || (laneTwoNote.y < visibleZone.y+100 && laneTwoNote.y > visibleZone.y+70)){
-                        this.tweens.add({
-                            targets: badTEXT,
-                            scale: {from: 1, to: 1.2},
-                            alpha: { from: 1, to: 0},
-                            ease: 'Elastic.InOut',
-                            duration: 350,
-                            repeat: 0,
-                        });
-                        charge_level += badCHARGE
-                        laneTwoNote.destroy()
-                    } else if ((laneTwoNote.y > visibleZone.y-150 && laneTwoNote.y < visibleZone.y + 100) || laneTwoNote.y > visibleZone.y+150){
-                        this.tweens.add({
-                            targets: missTEXT,
-                            scale: {from: 1, to: 1.2},
-                            alpha: { from: 1, to: 0},
-                            ease: 'Elastic.InOut',
-                            duration: 350,
-                            repeat: 0,
-                        });
-                        charge_level += missCHARGE
-                        laneTwoNote.destroy()
-                    } 
+                    this.noteJudgement(laneTwoNote)
                 }
             }
             if (Phaser.Input.Keyboard.JustDown(keyTHIRD)){
                 this.clickTween(this.keyThreeCenter, this.keyThreeInner, this.keyThreeOuter)
                 var laneThreeNote = Phaser.Actions.GetFirst(this.noteGroup.getChildren(), {x: LANE_THREE} )
-
                 if (laneThreeNote != null){
-                    if ((laneThreeNote.y > visibleZone.y-15 && laneThreeNote.y < visibleZone.y) || (laneThreeNote.y < visibleZone.y+ 15 && laneThreeNote.y > visibleZone.y)){
-                        this.tweens.add({
-                            targets: excellentTEXT,
-                            scale: {from: 1, to: 1.2},
-                            alpha: { from: 1, to: 0},
-                            ease: 'Elastic.InOut',
-                            duration: 350,
-                            repeat: 0,
-                        });
-                        charge_level += perfectCHARGE
-                        laneThreeNote.destroy()
-                    } else if ((laneThreeNote.y > visibleZone.y-40 && laneThreeNote.y < visibleZone.y + 15) || (laneThreeNote.y < visibleZone.y+40 && laneThreeNote.y > visibleZone.y+15)){
-                        this.tweens.add({
-                            targets: perfectTEXT,
-                            scale: {from: 1, to: 1.2},
-                            alpha: { from: 1, to: 0},
-                            ease: 'Elastic.InOut',
-                            duration: 350,
-                            repeat: 0,
-                        });
-                        charge_level += perfectCHARGE
-                        laneThreeNote.destroy()
-                    } else if ((laneThreeNote.y > visibleZone.y-70 && laneThreeNote.y < visibleZone.y + 40)|| (laneThreeNote.y < visibleZone.y+70 && laneThreeNote.y > visibleZone.y+40)){
-                        this.tweens.add({
-                            targets: goodTEXT,
-                            scale: {from: 1, to: 1.2},
-                            alpha: { from: 1, to: 0},
-                            ease: 'Elastic.InOut',
-                            duration: 350,
-                            repeat: 0,
-                        });
-                        charge_level += goodCHARGE
-                        laneThreeNote.destroy()
-                    } else if ((laneThreeNote.y > visibleZone.y-100 && laneThreeNote.y < visibleZone.y + 70) || (laneThreeNote.y < visibleZone.y+100 && laneThreeNote.y > visibleZone.y+70)){
-                        this.tweens.add({
-                            targets: badTEXT,
-                            scale: {from: 1, to: 1.2},
-                            alpha: { from: 1, to: 0},
-                            ease: 'Elastic.InOut',
-                            duration: 350,
-                            repeat: 0,
-                        });
-                        charge_level += badCHARGE
-                        laneThreeNote.destroy()
-                    } else if ((laneThreeNote.y > visibleZone.y-150 && laneThreeNote.y < visibleZone.y + 100) || laneThreeNote.y > visibleZone.y+150){
-                        this.tweens.add({
-                            targets: missTEXT,
-                            scale: {from: 1, to: 1.2},
-                            alpha: { from: 1, to: 0},
-                            ease: 'Elastic.InOut',
-                            duration: 350,
-                            repeat: 0,
-                        });
-                        charge_level += missCHARGE
-                        laneThreeNote.destroy()
-                    } 
+                    this.noteJudgement(laneThreeNote)
                 }
-                
             }
             if (Phaser.Input.Keyboard.JustDown(keyFOURTH)){
                 this.clickTween(this.keyFourCenter, this.keyFourInner, this.keyFourOuter)
                 var laneFourNote = Phaser.Actions.GetFirst(this.noteGroup.getChildren(), {x: LANE_FOUR} )
-
                 if (laneFourNote != null){
-                    if ((laneFourNote.y > visibleZone.y-15 && laneFourNote.y < visibleZone.y) || (laneFourNote.y < visibleZone.y+ 15 && laneFourNote.y > visibleZone.y)){
-                        this.tweens.add({
-                            targets: excellentTEXT,
-                            scale: {from: 1, to: 1.2},
-                            alpha: { from: 1, to: 0},
-                            ease: 'Elastic.InOut',
-                            duration: 350,
-                            repeat: 0,
-                        });
-                        charge_level += excellentCHARGE
-                        laneFourNote.destroy()
-                    } else if ((laneFourNote.y > visibleZone.y-40 && laneFourNote.y < visibleZone.y + 15) || (laneFourNote.y < visibleZone.y+40 && laneFourNote.y > visibleZone.y+15)){
-                        this.tweens.add({
-                            targets: perfectTEXT,
-                            scale: {from: 1, to: 1.2},
-                            alpha: { from: 1, to: 0},
-                            ease: 'Elastic.InOut',
-                            duration: 350,
-                            repeat: 0,
-                        });
-                        charge_level += perfectCHARGE
-                        laneFourNote.destroy()
-                    } else if ((laneFourNote.y > visibleZone.y-70 && laneFourNote.y < visibleZone.y + 40)|| (laneFourNote.y < visibleZone.y+70 && laneFourNote.y > visibleZone.y+40)){
-                        this.tweens.add({
-                            targets: goodTEXT,
-                            scale: {from: 1, to: 1.2},
-                            alpha: { from: 1, to: 0},
-                            ease: 'Elastic.InOut',
-                            duration: 350,
-                            repeat: 0,
-                        });
-                        charge_level += goodCHARGE
-                        laneFourNote.destroy()
-                    } else if ((laneFourNote.y > visibleZone.y-100 && laneFourNote.y < visibleZone.y + 70) || (laneFourNote.y < visibleZone.y+100 && laneFourNote.y > visibleZone.y+70)){
-                        this.tweens.add({
-                            targets: badTEXT,
-                            scale: {from: 1, to: 1.2},
-                            alpha: { from: 1, to: 0},
-                            ease: 'Elastic.InOut',
-                            duration: 350,
-                            repeat: 0,
-                        });
-                        charge_level += badCHARGE
-                        laneFourNote.destroy()
-                    } else if ((laneFourNote.y > visibleZone.y-150 && laneFourNote.y < visibleZone.y + 100) || laneFourNote.y > visibleZone.y+150){
-                        this.tweens.add({
-                            targets: missTEXT,
-                            scale: {from: 1, to: 1.2},
-                            alpha: { from: 1, to: 0},
-                            ease: 'Elastic.InOut',
-                            duration: 350,
-                            repeat: 0,
-                        });
-                        charge_level += missCHARGE
-                        laneFourNote.destroy()
-                    } 
+                    this.noteJudgement(laneFourNote)
                 }
             }
         }
-    
-    }
-
-    clickTween(center, inner, outer){
-        this.tweens.add({
-            targets: center,
-            alpha: { from: 1, to: 0},
-            scale: { from: 0.5, to: 0},
-            ease: 'Sine.InOut',
-            duration: 250,
-            repeat: 0,
-        });
-        this.tweens.add({
-            targets: inner,
-            alpha: { from: 1, to: 0},
-            scale: { from: 0.5, to: 0.51},
-            ease: 'Sine.InOut',
-            duration: 800,
-            repeat: 0,
-        });
-        this.tweens.add({
-            targets: outer,
-            ease: 'Bounce.InOut',
-            alpha: { from: 1, to: 0},
-            ease: 'Sine.InOut',
-            scale: { from: 0.5, to: 0.55},
-            duration: 350,
-            repeat: 0,
-        });
     }
 }
