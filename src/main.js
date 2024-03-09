@@ -62,3 +62,4 @@ let speed
 
 let xPosition, yPosition
 let gameOver = false
+let reticle

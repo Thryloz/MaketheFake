@@ -25,9 +25,9 @@ class Note extends Phaser.Physics.Arcade.Sprite {
                 duration: 350,
                 repeat: 0,
             }); 
+            missCOUNT++
             this.destroy();
         }
-
     }
 
 

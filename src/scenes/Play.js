@@ -15,6 +15,8 @@ class Play extends Phaser.Scene{
         this.load.image('bluenoteclick_outer', './assets/bluenoteclick_outer.png')
         this.load.image('bullet_active', './assets/bullet_active.png')
         this.load.image('bullet_inactive', './assets/bullet_inactive.png')
+
+        this.load.audio('noteClick', ['./assets/back-button-hover.wav']);
     }
 
     create(){
@@ -72,6 +74,12 @@ class Play extends Phaser.Scene{
         this.keyFourInner = this.add.image(LANE_FOUR, game.config.height-80, "bluenoteclick_inner").setAlpha(0).setScale(0.5)
         this.keyFourOuter = this.add.image(LANE_FOUR, game.config.height-80, "bluenoteclick_outer").setAlpha(0).setScale(0.5)
 
+        this.noteClick = this.sound.add('noteClick', { 
+            volume: 1,
+            rate: 1,
+            loop: false 
+        });
+
         // speed control panel
         this.speedControlPanel = this.add.rectangle(width/2, height/2, width/2, height/2, 0x301934, 1).setStrokeStyle(2, 0xA020F0, 1).setScale(0)
         this.speedControlPanel.setDepth(3)
@@ -96,7 +104,7 @@ class Play extends Phaser.Scene{
         this.bullet1_active = this.add.image(70, 425, 'bullet_active', 0).setScale(0.5).setVisible(false)
 
         //reticle
-        this.reticle = this.add.image(width/2, height/2, 'reticle')
+        reticle = this.add.image(width/2, height/2, 'reticle').setDepth(5)
 
         this.noteGroup = this.add.group({
             runChildUpdate: true    
@@ -122,6 +130,13 @@ class Play extends Phaser.Scene{
             },
             loop: true
         })
+
+        this.gameTimer = 60000
+        this.timeInSeconds = this.gameTimer/1000;
+        this.timer = this.add.bitmapText(width/2, 50, 'gem', this.timeInSeconds, 50).setOrigin(0.5)
+        this.clock = this.time.delayedCall(this.gameTimer, () => {
+            gameOver = true;
+        }, null, this)
         
     }
 
@@ -135,6 +150,7 @@ class Play extends Phaser.Scene{
         this.noteGroup.add(note)
     }
 
+    // click animation
     clickTween(center, inner, outer){
         this.tweens.add({
             targets: center,
@@ -161,8 +177,10 @@ class Play extends Phaser.Scene{
             duration: 350,
             repeat: 0,
         });
+        this.noteClick.play()
     }
 
+    // manages note timing
     noteJudgement(note){
         if ((note.y > visibleZone.y-15 && note.y < visibleZone.y) || (note.y < visibleZone.y+ 15 && note.y > visibleZone.y)){
             this.tweens.add({
@@ -237,8 +255,9 @@ class Play extends Phaser.Scene{
 
     update(){
         // 15 40 70 100 150
+        this.timer.setText(Math.floor((this.gameTimer - this.clock.getElapsed())/1000))
 
-
+        // speed control panel
         if (Phaser.Input.Keyboard.JustDown(keyTAB)){
             if (!scenePaused){
                 this.noteSpawning.paused = true
@@ -263,6 +282,7 @@ class Play extends Phaser.Scene{
             }
         }
 
+        // aim mode
         if (Phaser.Input.Keyboard.JustDown(keySHIFT) && bulletCount > 0){
             if (!aimMode){
                 this.noteSpawning.paused = true
@@ -273,7 +293,7 @@ class Play extends Phaser.Scene{
             }
         }
 
-
+        // handling charging
         if (charge_level > 0 && (charge_level < 120)){
             fill_bar.height = charge_level * 2
         }
@@ -314,19 +334,19 @@ class Play extends Phaser.Scene{
             Phaser.Actions.Call(this.noteGroup.getChildren(), (note) => note.speed = 0.1)
 
             if (keyW.isDown || keyUP.isDown){
-                this.reticle.y -= 5
+                reticle.y -= 5
             }
 
             if (keySECOND.isDown || keyDOWN.isDown){
-                this.reticle.y += 5
+                reticle.y += 5
             }
 
             if (keyFIRST.isDown || keyLEFT.isDown){
-                this.reticle.x -= 5
+                reticle.x -= 5
             }
 
             if (keyD.isDown || keyRIGHT.isDown){
-                this.reticle.x += 5
+                reticle.x += 5
             }
 
 
@@ -348,6 +368,8 @@ class Play extends Phaser.Scene{
                         this.bullet1_inactive.setVisible(true)
                         break
                 }
+                
+                
             }
         } else {
             Phaser.Actions.Call(this.noteGroup.getChildren(), (note) => note.speed = speed*2)

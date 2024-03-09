@@ -9,6 +9,7 @@ class Enemy extends Phaser.GameObjects.Sprite{
         this.setScale(this.scale)
         this.timeBetweenMoving = Math.random() * (800-500) + 500
         this.time = 0
+        this.targeted = false
     }
 
     update(){
