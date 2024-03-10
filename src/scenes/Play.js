@@ -16,6 +16,15 @@ class Play extends Phaser.Scene{
         this.load.image('bullet_active', './assets/bullet_active.png')
         this.load.image('bullet_inactive', './assets/bullet_inactive.png')
 
+        this.load.image('blue_note', './assets/blue_note.png')
+        this.load.image('cyan_note', './assets/cyan_note.png')
+        this.load.image('green_note', './assets/green_note.png')
+        this.load.image('orange_note', './assets/orange_note.png')
+        this.load.image('pink_note', './assets/pink_note.png')
+
+        this.load.image('reticle', './assets/reticle.png')
+        this.load.image('clickParticle', './assets/clickParticle.png')
+
         this.load.audio('noteClick', ['./assets/back-button-hover.wav']);
     }
 
@@ -27,6 +36,10 @@ class Play extends Phaser.Scene{
         goodCOUNT = 0
         badCOUNT = 0
         missCOUNT = 0
+        aimMode = false
+        scenePaused = false
+        gameOver = false
+        
         keyTAB = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TAB)
         keyFIRST = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A)
         keySECOND = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S)
@@ -36,6 +49,7 @@ class Play extends Phaser.Scene{
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
         keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W)
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
+        keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R)
 
 
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT)
@@ -75,7 +89,7 @@ class Play extends Phaser.Scene{
         this.keyFourOuter = this.add.image(LANE_FOUR, game.config.height-80, "bluenoteclick_outer").setAlpha(0).setScale(0.5)
 
         this.noteClick = this.sound.add('noteClick', { 
-            volume: 1,
+            volume: .5,
             rate: 1,
             loop: false 
         });
@@ -104,12 +118,11 @@ class Play extends Phaser.Scene{
         this.bullet1_active = this.add.image(70, 425, 'bullet_active', 0).setScale(0.5).setVisible(false)
 
         //reticle
-        reticle = this.add.image(width/2, height/2, 'reticle').setDepth(5)
+        reticle = this.add.image(width/2, height/2, 'reticle').setScale(1.5).setDepth(5).setVisible(false)
 
         this.noteGroup = this.add.group({
             runChildUpdate: true    
         });
-
 
         this.noteSpawning = this.time.addEvent({
             delay: -369.1503 * Math.log(0.0666085*speed),
@@ -138,6 +151,15 @@ class Play extends Phaser.Scene{
             gameOver = true;
         }, null, this)
         
+        /* this.clickParticles = this.add.particles(0, 0, 'clickParticle', {
+            frame: 0,
+            lifespan: 450,
+            speed: { min: 150, max: 250 },
+            scale: { start: 1, end: 0 },
+            gravityY: 500,
+            rotate: 90,
+            emitting: false
+        }) */
     }
 
     addEnemy(){
@@ -146,7 +168,9 @@ class Play extends Phaser.Scene{
     }
 
     addNote() {
-        let note = new Note(this, 0, speed);
+        let asset_list = ['blue_note', 'cyan_note', 'green_note', 'orange_note', 'pink_note']
+        let num = Math.floor(Math.random() * 5);
+        let note = new Note(this, asset_list[num], 0, speed);
         this.noteGroup.add(note)
     }
 
@@ -182,6 +206,7 @@ class Play extends Phaser.Scene{
 
     // manages note timing
     noteJudgement(note){
+        
         if ((note.y > visibleZone.y-15 && note.y < visibleZone.y) || (note.y < visibleZone.y+ 15 && note.y > visibleZone.y)){
             this.tweens.add({
                 targets: excellentTEXT,
@@ -191,6 +216,7 @@ class Play extends Phaser.Scene{
                 duration: 350,
                 repeat: 0,
             });
+            this.clickParticles.emitParticleAt(note.x, note.y, 5)
             charge_level += excellentCHARGE
             combo++
             excellentCOUNT++
@@ -204,6 +230,7 @@ class Play extends Phaser.Scene{
                 duration: 350,
                 repeat: 0,
             });
+            this.clickParticles.emitParticleAt(note.x, note.y, 7)
             charge_level += perfectCHARGE
             combo++
             perfectCOUNT++
@@ -217,6 +244,7 @@ class Play extends Phaser.Scene{
                 duration: 350,
                 repeat: 0,
             });
+            this.clickParticles.emitParticleAt(note.x, note.y, 7)
             charge_level += goodCHARGE
             combo++
             goodCOUNT++
@@ -230,6 +258,7 @@ class Play extends Phaser.Scene{
                 duration: 350,
                 repeat: 0,
             });
+            this.clickParticles.emitParticleAt(note.x, note.y, 7)
             charge_level += badCHARGE
             combo = 0
             badCOUNT++
@@ -243,11 +272,13 @@ class Play extends Phaser.Scene{
                 duration: 350,
                 repeat: 0,
             });
+            this.clickParticles.emitParticleAt(note.x, note.y, 7)
             charge_level += missCHARGE
             combo = 0
             missCOUNT++ 
             note.destroy()
         } 
+        
         if (combo > maxCombo){
             maxCombo = combo
         }
@@ -327,11 +358,17 @@ class Play extends Phaser.Scene{
                 speed--;
             } else if (Phaser.Input.Keyboard.JustDown(keyFOURTH) && speed < 10){
                 speed++;
+            } else if (Phaser.Input.Keyboard.JustDown(keyR)){
+                aimMode = false
+                scenePaused = false
+                this.scene.restart()
             }
             this.noteSpawning.delay = -369.1503 * Math.log(0.0666085*speed)
             this.speedTEXT.setText(speed)
         } else if(aimMode){
+            reticle.setVisible(true)
             Phaser.Actions.Call(this.noteGroup.getChildren(), (note) => note.speed = 0.1)
+            var targeted_enemy = Phaser.Actions.GetFirst(this.enemyGroup.getChildren(), {targeted: true} )
 
             if (keyW.isDown || keyUP.isDown){
                 reticle.y -= 5
@@ -368,8 +405,10 @@ class Play extends Phaser.Scene{
                         this.bullet1_inactive.setVisible(true)
                         break
                 }
-                
-                
+                if (targeted_enemy != null ){
+                    targeted_enemy.destroy()
+                }
+                reticle.setVisible(false)
             }
         } else {
             Phaser.Actions.Call(this.noteGroup.getChildren(), (note) => note.speed = speed*2)
@@ -404,6 +443,8 @@ class Play extends Phaser.Scene{
         }
 
         if (gameOver){
+            aimMode = false
+            scenePaused = false
             this.scene.start('scoreScreenScene')
         }
     }

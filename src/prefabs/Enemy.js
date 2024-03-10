@@ -21,6 +21,14 @@ class Enemy extends Phaser.GameObjects.Sprite{
             this.setY(Math.random() * (height-200-50) + 50) 
             this.setScale(this.scale)
         }
+        if (reticle.x > this.x - this.width && reticle.x < this.x + this.width && reticle.y > this.y - this.height && reticle.y < this.y + this.height){
+            this.targeted = true
+            console.log(this.targeted)
+        } else {
+            this.targeted = false
+        }
+
+
         if (this.scale > 5) {
             gameOver = true
         }
