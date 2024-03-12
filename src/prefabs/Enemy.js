@@ -1,9 +1,8 @@
 class Enemy extends Phaser.GameObjects.Sprite{
     constructor(scene, texture, frame, hp){
-        xPosition = Math.random() * (880-200) + 200 
-        yPosition = Math.random() * (height-200-50) + 50 
-        super(scene, xPosition, yPosition, texture, frame, hp)
+        super(scene, 0, 0, texture, frame, hp)
         scene.add.existing(this)
+        this.setRandomPosition(200, 180, 680, 350)
         this.hp = hp
         this.scale = 2
         this.setScale(this.scale)
@@ -17,19 +16,17 @@ class Enemy extends Phaser.GameObjects.Sprite{
         if (this.time > this.timeBetweenMoving){
             this.time = 0
             this.scale++
-            this.setX(Math.random() * (880-200) + 200 )
-            this.setY(Math.random() * (height-200-50) + 50) 
+            this.setRandomPosition(150, 140, 780, 430)
             this.setScale(this.scale)
         }
-        if (reticle.x > this.x - this.width && reticle.x < this.x + this.width && reticle.y > this.y - this.height && reticle.y < this.y + this.height){
+        if (reticle.x > this.x - this.width*this.scale && reticle.x < this.x + this.width*this.scale && reticle.y > this.y - this.height * this.scale && reticle.y < this.y + this.height * this.scale){
             this.targeted = true
-            console.log(this.targeted)
         } else {
             this.targeted = false
         }
 
 
-        if (this.scale > 5) {
+        if (this.scale > 4) {
             gameOver = true
         }
     }

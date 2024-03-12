@@ -14,10 +14,13 @@ let config = {
         target: 60
     },
     pixelArt: true,
-    scene: [ Play, Menu, Credits, ScoreScreen]
+    //scene: [ Play, Menu, Credits, ScoreScreen]
+    scene: [ Menu, Play, Credits, ScoreScreen]
 }
 
 let game = new Phaser.Game(config);
+
+let font = 'gem'
 
 let width = game.config.width;
 let height = game.config.height;
@@ -64,3 +67,6 @@ let speed
 let xPosition, yPosition
 let gameOver = false
 let reticle
+
+let score
+let amountOfNotes = 0

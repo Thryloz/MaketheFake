@@ -9,6 +9,8 @@ class Play extends Phaser.Scene{
         this.load.image('background', './assets/makethefakebackground.png')
         this.load.image('charge_level_ui', './assets/chargelevelui.png');
         this.load.image('fill_bar', './assets/fillbar.png');
+        this.load.image('UI', './assets/ui.png');
+        this.load.image('pause_button', './assets/pausebutton.png');
 
         this.load.image('bluenoteclick_center', './assets/bluenoteclick_center.png')
         this.load.image('bluenoteclick_inner', './assets/bluenoteclick_inner.png')
@@ -30,7 +32,10 @@ class Play extends Phaser.Scene{
 
     create(){
         speed = 5
+        score = 0 
         maxCombo = 0
+        combo = 0
+        amountOfNotes = 0
         excellentCOUNT = 0
         perfectCOUNT = 0
         goodCOUNT = 0
@@ -57,10 +62,15 @@ class Play extends Phaser.Scene{
         keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP)
         keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN)
 
+        //BACKGROUND AND UI
         this.background = this.add.image(width/2, height/2, 'background')
+        this.UI = this.add.image(width/2, height/2, 'UI').setDepth(5)
+        this.pauseButton = this.add.image(120, 120, 'pause_button').setScale(2).setDepth(5)
 
-        this.leftRect = this.add.rectangle(150, height/2, 2, game.config.height, 0xFF0000, 0.5)
-        this.rightRect = this.add.rectangle(930, height/2, 2, game.config.height, 0xFF0000, 0.5)
+        //this.leftRect = this.add.rectangle(150, height/2, 2, game.config.height, 0xFF0000, 0.5)
+        //this.rightRect = this.add.rectangle(930, height/2, 2, game.config.height, 0xFF0000, 0.5)
+        //this.up = this.add.rectangle(width/2, 140, width, 2, 0xFF0000, 0.5)
+        //this.point = this.add.image(200,180, 'none')
 
         visibleZone = this.add.rectangle(game.config.width/2, game.config.height-150, game.config.width, 2, 0xFF0000, 0.5)
         excellentZone = this.add.rectangle(visibleZone.x, visibleZone.y, game.config.width, 15, 0x4169E1, 0)
@@ -69,11 +79,15 @@ class Play extends Phaser.Scene{
         badZone = this.add.rectangle(visibleZone.x, visibleZone.y, game.config.width, 100, 0xAAAAF0, 0)
         missZone = this.add.rectangle(visibleZone.x, visibleZone.y, game.config.width, 150, 0xAAAAF0, 0)
 
-        excellentTEXT = this.add.bitmapText(width/2, visibleZone.y-150, 'gem', 'EXCELLENT', 50).setOrigin(0.5).setTint(0xFFFFFF).setAlpha(0).setDepth(5);
-        perfectTEXT = this.add.bitmapText(width/2, visibleZone.y-150, 'gem', 'PERFECT', 50).setOrigin(0.5).setTint(0xFFFFFF).setAlpha(0).setDepth(5);
-        goodTEXT = this.add.bitmapText(width/2, visibleZone.y-150, 'gem', 'GOOD', 50).setOrigin(0.5).setTint(0xFFFFFF).setAlpha(0).setDepth(5);
-        badTEXT = this.add.bitmapText(width/2, visibleZone.y-150, 'gem', 'BAD', 50).setOrigin(0.5).setTint(0xFFFFFF).setAlpha(0).setDepth(5);
-        missTEXT = this.add.bitmapText(width/2, visibleZone.y-150, 'gem', 'MISS', 50).setOrigin(0.5).setTint(0xFFFFFF).setAlpha(0).setDepth(5);
+        excellentTEXT = this.add.bitmapText(width/2, visibleZone.y-150, font, 'EXCELLENT', 50).setOrigin(0.5).setTint(0xffffff).setAlpha(0).setDepth(5);
+        perfectTEXT = this.add.bitmapText(width/2, visibleZone.y-150, font, 'PERFECT', 50).setOrigin(0.5).setTint(0xffffff).setAlpha(0).setDepth(5);
+        goodTEXT = this.add.bitmapText(width/2, visibleZone.y-150, font, 'GOOD', 50).setOrigin(0.5).setTint(0xffffff).setAlpha(0).setDepth(5);
+        badTEXT = this.add.bitmapText(width/2, visibleZone.y-150, font, 'BAD', 50).setOrigin(0.5).setTint(0xffffff).setAlpha(0).setDepth(5);
+        missTEXT = this.add.bitmapText(width/2, visibleZone.y-150, font, 'MISS', 50).setOrigin(0.5).setTint(0xffffff).setAlpha(0).setDepth(5);
+        this.scoreTEXT = this.add.bitmapText(230, 100, font, 'SCORE', 35).setOrigin(0.5).setTint(0xc1c6fc).setDepth(5).setRotation(0.07);
+        this.scoreNUMBER = this.add.bitmapText(350, 110, font, score, 30).setOrigin(0.5).setTint(0xc1c6fc).setDepth(5).setRotation(0.07);
+        this.comboTEXT = this.add.bitmapText(770, 110, font, 'COMBO', 35).setOrigin(0.5).setTint(0xc1c6fc).setDepth(5).setRotation(-0.07);
+        this.comboNUMBER = this.add.bitmapText(850, 100, font, combo, 35).setOrigin(0.5).setTint(0xc1c6fc).setDepth(5).setRotation(-0.07);
 
         this.keyOneCenter = this.add.image(LANE_ONE, game.config.height-80, "bluenoteclick_center").setAlpha(0).setScale(0.5)
         this.keyOneInner = this.add.image(LANE_ONE, game.config.height-80, "bluenoteclick_inner").setAlpha(0).setScale(0.5)
@@ -99,7 +113,7 @@ class Play extends Phaser.Scene{
         this.speedControlPanel.setDepth(3)
         this.speedTEXTbackground = this.add.rectangle(width/2, height/2 - 40, 50, 65, 0x887191, 1).setStrokeStyle(2, 0xA020F0, 1).setScale(0)
         this.speedTEXTbackground.setDepth(4)
-        this.speedTEXT = this.add.bitmapText(width/2, height/2 - 40, 'gem', speed, 50).setOrigin(0.5).setTint(0xFFFFFF).setScale(0)
+        this.speedTEXT = this.add.bitmapText(width/2, height/2 - 40, font, speed, 50).setOrigin(0.5).setTint(0xFFFFFF).setScale(0)
         this.speedTEXT.setDepth(5)
 
         // https://newdocs.phaser.io/docs/3.60.0/Phaser.GameObjects.NineSlice#setSize
@@ -146,7 +160,7 @@ class Play extends Phaser.Scene{
 
         this.gameTimer = 60000
         this.timeInSeconds = this.gameTimer/1000;
-        this.timer = this.add.bitmapText(width/2, 50, 'gem', this.timeInSeconds, 50).setOrigin(0.5)
+        this.timer = this.add.bitmapText(width/2, 50, font, this.timeInSeconds, 50).setOrigin(0.5).setDepth(5)
         this.clock = this.time.delayedCall(this.gameTimer, () => {
             gameOver = true;
         }, null, this)
@@ -206,7 +220,7 @@ class Play extends Phaser.Scene{
 
     // manages note timing
     noteJudgement(note){
-        
+
         if ((note.y > visibleZone.y-15 && note.y < visibleZone.y) || (note.y < visibleZone.y+ 15 && note.y > visibleZone.y)){
             this.tweens.add({
                 targets: excellentTEXT,
@@ -216,7 +230,7 @@ class Play extends Phaser.Scene{
                 duration: 350,
                 repeat: 0,
             });
-            this.clickParticles.emitParticleAt(note.x, note.y, 5)
+            score += 50
             charge_level += excellentCHARGE
             combo++
             excellentCOUNT++
@@ -230,7 +244,7 @@ class Play extends Phaser.Scene{
                 duration: 350,
                 repeat: 0,
             });
-            this.clickParticles.emitParticleAt(note.x, note.y, 7)
+            score += 10
             charge_level += perfectCHARGE
             combo++
             perfectCOUNT++
@@ -244,7 +258,7 @@ class Play extends Phaser.Scene{
                 duration: 350,
                 repeat: 0,
             });
-            this.clickParticles.emitParticleAt(note.x, note.y, 7)
+            score += 5
             charge_level += goodCHARGE
             combo++
             goodCOUNT++
@@ -258,7 +272,6 @@ class Play extends Phaser.Scene{
                 duration: 350,
                 repeat: 0,
             });
-            this.clickParticles.emitParticleAt(note.x, note.y, 7)
             charge_level += badCHARGE
             combo = 0
             badCOUNT++
@@ -272,9 +285,8 @@ class Play extends Phaser.Scene{
                 duration: 350,
                 repeat: 0,
             });
-            this.clickParticles.emitParticleAt(note.x, note.y, 7)
             charge_level += missCHARGE
-            combo = 0
+             combo = 0
             missCOUNT++ 
             note.destroy()
         } 
@@ -287,7 +299,8 @@ class Play extends Phaser.Scene{
     update(){
         // 15 40 70 100 150
         this.timer.setText(Math.floor((this.gameTimer - this.clock.getElapsed())/1000))
-
+        this.scoreNUMBER.setText(score)
+        this.comboNUMBER.setText(combo)
         // speed control panel
         if (Phaser.Input.Keyboard.JustDown(keyTAB)){
             if (!scenePaused){
@@ -320,6 +333,7 @@ class Play extends Phaser.Scene{
                 aimMode = true
             } else {
                 this.noteSpawning.paused = false
+                reticle.setVisible(false)
                 aimMode = false
             }
         }
@@ -406,6 +420,7 @@ class Play extends Phaser.Scene{
                         break
                 }
                 if (targeted_enemy != null ){
+                    score += 500
                     targeted_enemy.destroy()
                 }
                 reticle.setVisible(false)
