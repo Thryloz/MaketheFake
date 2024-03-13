@@ -27,6 +27,20 @@ class ScoreScreen extends Phaser.Scene{
         this.space = this.add.bitmapText(700, 600, this.font, 'SPACE to go to Menu', 30).setTint(0xFFFFFF);
         this.r = this.add.bitmapText(700, 650, this.font, 'R to play again', 30).setTint(0xFFFFFF);
 
+        if (this.accuracy > 94.99){
+            this.S = this.add.bitmapText(750, 300, this.font, 'S', 200).setTint(0xFFFFFF);
+        } else if (this.accuracy > 91.99){
+            this.A = this.add.bitmapText(750, 300, this.font, 'A', 200).setTint(0xFFFFFF);
+        } else if (this.accuracy > 84.99){
+            this.B = this.add.bitmapText(750, 300, this.font, 'B', 200).setTint(0xFFFFFF);
+        } else if (this.accuracy > 69.99){
+            this.C = this.add.bitmapText(750, 300, this.font, 'C', 200).setTint(0xFFFFFF);
+        } else if (this.accuracy > 49.99){
+            this.D = this.add.bitmapText(750, 300, this.font, 'D', 200).setTint(0xFFFFFF);
+        } else {
+            this.F = this.add.bitmapText(750, 300, this.font, 'F', 200).setTint(0xFFFFFF);
+        }
+
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R)
     }

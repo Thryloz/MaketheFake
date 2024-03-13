@@ -7,6 +7,7 @@ class Note extends Phaser.Physics.Arcade.Sprite {
         this.scene.add.existing(this);
         this.speed = speed
         this.setScale(3)
+        this.setDepth(10)
         amountOfNotes++
     }
 

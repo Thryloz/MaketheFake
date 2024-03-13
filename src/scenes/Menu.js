@@ -18,21 +18,13 @@ class Menu extends Phaser.Scene{
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         this.logo = this.add.image(width/2, 220, 'logo').setScale(1)
-        this.tweens.add({
-            targets: this.logo,
-            duration: 2500,
-            angle: { from: -1, to: 1 },
-            yoyo: true,
-            repeat: -1,
-            onYoyo: function() {
-                this.cameras.main.shake(100, 0.0025);
-            },
-            onYoyoScope: this
-        });
+
 
         this.PLAY = this.add.bitmapText(width/2, 400, 'gem', 'PLAY', 64).setOrigin(0.5).setTint(0xA020F0).setScale(1.2);
         this.TUTORIAL = this.add.bitmapText(width/2, 500, 'gem', 'TUTORIAL', 64).setOrigin(0.5).setTint(0xFFFFFF);
         this.CREDITS = this.add.bitmapText(width/2, 600, 'gem', 'CREDITS', 64).setOrigin(0.5).setTint(0xA020F0);
+
+        this.add.bitmapText(width/2, 680, 'gem', 'Press SPACE to select', 50).setTint(0xffffff).setOrigin(0.5);
 
 
         this.cursor = 400

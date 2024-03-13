@@ -9,7 +9,7 @@ class Credits extends Phaser.Scene{
         this.CREDITS = this.add.bitmapText(140, 60, 'gem', 'CREDITS', 64).setOrigin(0.5).setTint(0xffffff);
 
         let font_size = 24;
-        this.add.bitmapText(300, 150, 'gem', 'Design, Programming, and Art by Jim Lee', font_size).setOrigin(0.5).setTint(0xffffff);
+        this.add.bitmapText(300, 150, 'gem', 'Programming, and Art by Jim Lee', font_size).setOrigin(0.5).setTint(0xffffff);
         this.add.bitmapText(340, 200, 'gem', 'Background Music: A Centralized View by VINXIS', font_size).setOrigin(0.5).setTint(0xffffff);
         this.add.bitmapText(300, 250, 'gem', 'https://vinxis.moe/', font_size).setOrigin(0.5).setTint(0xffffff);
         this.add.bitmapText(443, 300, 'gem', 'https://www.youtube.com/watch?v=K5UL_RxK0lk', font_size).setOrigin(0.5).setTint(0xffffff);
@@ -21,11 +21,11 @@ class Credits extends Phaser.Scene{
 
 
         this.add.bitmapText(width/2, 600, 'gem', `Press ENTER to return`, 24).setOrigin(0.5).setTint(0xffffff);
-        keyENTER = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
+        keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     }
 
     update(){
-        if (Phaser.Input.Keyboard.JustDown(keyENTER)){ 
+        if (Phaser.Input.Keyboard.JustDown(keySPACE)){ 
             this.scene.start('menuScene')
         }
     }

@@ -27,6 +27,8 @@ class Play extends Phaser.Scene{
         this.load.image('reticle', './assets/reticle.png')
         this.load.image('clickParticle', './assets/clickParticle.png')
 
+        this.load.image('enemy1', './assets/enemy1.png')
+
         this.load.audio('noteClick', ['./assets/back-button-hover.wav']);
     }
 
@@ -64,8 +66,8 @@ class Play extends Phaser.Scene{
 
         //BACKGROUND AND UI
         this.background = this.add.image(width/2, height/2, 'background')
-        this.UI = this.add.image(width/2, height/2, 'UI').setDepth(5)
-        this.pauseButton = this.add.image(120, 120, 'pause_button').setScale(2).setDepth(5)
+        this.UI = this.add.image(width/2, height/2, 'UI').setDepth(10)
+        this.pauseButton = this.add.image(120, 120, 'pause_button').setScale(2).setDepth(10)
 
         //this.leftRect = this.add.rectangle(150, height/2, 2, game.config.height, 0xFF0000, 0.5)
         //this.rightRect = this.add.rectangle(930, height/2, 2, game.config.height, 0xFF0000, 0.5)
@@ -79,15 +81,15 @@ class Play extends Phaser.Scene{
         badZone = this.add.rectangle(visibleZone.x, visibleZone.y, game.config.width, 100, 0xAAAAF0, 0)
         missZone = this.add.rectangle(visibleZone.x, visibleZone.y, game.config.width, 150, 0xAAAAF0, 0)
 
-        excellentTEXT = this.add.bitmapText(width/2, visibleZone.y-150, font, 'EXCELLENT', 50).setOrigin(0.5).setTint(0xffffff).setAlpha(0).setDepth(5);
-        perfectTEXT = this.add.bitmapText(width/2, visibleZone.y-150, font, 'PERFECT', 50).setOrigin(0.5).setTint(0xffffff).setAlpha(0).setDepth(5);
-        goodTEXT = this.add.bitmapText(width/2, visibleZone.y-150, font, 'GOOD', 50).setOrigin(0.5).setTint(0xffffff).setAlpha(0).setDepth(5);
-        badTEXT = this.add.bitmapText(width/2, visibleZone.y-150, font, 'BAD', 50).setOrigin(0.5).setTint(0xffffff).setAlpha(0).setDepth(5);
-        missTEXT = this.add.bitmapText(width/2, visibleZone.y-150, font, 'MISS', 50).setOrigin(0.5).setTint(0xffffff).setAlpha(0).setDepth(5);
-        this.scoreTEXT = this.add.bitmapText(230, 100, font, 'SCORE', 35).setOrigin(0.5).setTint(0xc1c6fc).setDepth(5).setRotation(0.07);
-        this.scoreNUMBER = this.add.bitmapText(350, 110, font, score, 30).setOrigin(0.5).setTint(0xc1c6fc).setDepth(5).setRotation(0.07);
-        this.comboTEXT = this.add.bitmapText(770, 110, font, 'COMBO', 35).setOrigin(0.5).setTint(0xc1c6fc).setDepth(5).setRotation(-0.07);
-        this.comboNUMBER = this.add.bitmapText(850, 100, font, combo, 35).setOrigin(0.5).setTint(0xc1c6fc).setDepth(5).setRotation(-0.07);
+        excellentTEXT = this.add.bitmapText(width/2, visibleZone.y-150, font, 'EXCELLENT', 50).setOrigin(0.5).setTint(0xffffff).setAlpha(0).setDepth(10);
+        perfectTEXT = this.add.bitmapText(width/2, visibleZone.y-150, font, 'PERFECT', 50).setOrigin(0.5).setTint(0xffffff).setAlpha(0).setDepth(10);
+        goodTEXT = this.add.bitmapText(width/2, visibleZone.y-150, font, 'GOOD', 50).setOrigin(0.5).setTint(0xffffff).setAlpha(0).setDepth(10);
+        badTEXT = this.add.bitmapText(width/2, visibleZone.y-150, font, 'BAD', 50).setOrigin(0.5).setTint(0xffffff).setAlpha(0).setDepth(10);
+        missTEXT = this.add.bitmapText(width/2, visibleZone.y-150, font, 'MISS', 50).setOrigin(0.5).setTint(0xffffff).setAlpha(0).setDepth(10);
+        this.scoreTEXT = this.add.bitmapText(230, 100, font, 'SCORE', 35).setOrigin(0.5).setTint(0xc1c6fc).setDepth(10).setRotation(0.07);
+        this.scoreNUMBER = this.add.bitmapText(350, 110, font, score, 30).setOrigin(0.5).setTint(0xc1c6fc).setDepth(10).setRotation(0.07);
+        this.comboTEXT = this.add.bitmapText(770, 110, font, 'COMBO', 35).setOrigin(0.5).setTint(0xc1c6fc).setDepth(10).setRotation(-0.07);
+        this.comboNUMBER = this.add.bitmapText(850, 100, font, combo, 35).setOrigin(0.5).setTint(0xc1c6fc).setDepth(10).setRotation(-0.07);
 
         this.keyOneCenter = this.add.image(LANE_ONE, game.config.height-80, "bluenoteclick_center").setAlpha(0).setScale(0.5)
         this.keyOneInner = this.add.image(LANE_ONE, game.config.height-80, "bluenoteclick_inner").setAlpha(0).setScale(0.5)
@@ -110,11 +112,17 @@ class Play extends Phaser.Scene{
 
         // speed control panel
         this.speedControlPanel = this.add.rectangle(width/2, height/2, width/2, height/2, 0x301934, 1).setStrokeStyle(2, 0xA020F0, 1).setScale(0)
-        this.speedControlPanel.setDepth(3)
-        this.speedTEXTbackground = this.add.rectangle(width/2, height/2 - 40, 50, 65, 0x887191, 1).setStrokeStyle(2, 0xA020F0, 1).setScale(0)
-        this.speedTEXTbackground.setDepth(4)
-        this.speedTEXT = this.add.bitmapText(width/2, height/2 - 40, font, speed, 50).setOrigin(0.5).setTint(0xFFFFFF).setScale(0)
-        this.speedTEXT.setDepth(5)
+        this.speedControlPanel.setDepth(8)
+        this.speedTEXTbackground = this.add.rectangle(width/2, height/2 - 80, 50, 65, 0x887191, 1).setStrokeStyle(2, 0xA020F0, 1).setScale(0)
+        this.speedTEXTbackground.setDepth(9)
+        this.speedTEXT = this.add.bitmapText(width/2, height/2 - 80, font, speed, 50).setOrigin(0.5).setTint(0xFFFFFF).setScale(0)
+        this.speedTEXT.setDepth(10)
+        this.AtoDecrease = this.add.bitmapText(width/2, height/2, font, 'A to decrease speed', 50).setOrigin(0.5).setTint(0xFFFFFF).setScale(0)
+        this.quotetoIncrease = this.add.bitmapText(width/2, height/2 + 50, font, '\' to increase speed', 50).setOrigin(0.5).setTint(0xFFFFFF).setScale(0)
+        this.RtoRestart = this.add.bitmapText(width/2, height/2 + 100, font, 'R to restart', 50).setOrigin(0.5).setTint(0xFFFFFF).setScale(0)
+        this.AtoDecrease.setDepth(10)
+        this.quotetoIncrease.setDepth(10)
+        this.RtoRestart.setDepth(10)
 
         // https://newdocs.phaser.io/docs/3.60.0/Phaser.GameObjects.NineSlice#setSize
         chargeUI = this.add.nineslice(game.config.width-70, game.config.height/2 - 50, 'charge_level_ui', 0, 50)
@@ -123,16 +131,16 @@ class Play extends Phaser.Scene{
 
         // bullet handling
         bulletCount = 0
-        this.bullet3_inactive = this.add.image(70, 275, 'bullet_inactive', 0).setScale(0.5)
-        this.bullet2_inactive = this.add.image(70, 350, 'bullet_inactive', 0).setScale(0.5)
-        this.bullet1_inactive = this.add.image(70, 425, 'bullet_inactive', 0).setScale(0.5)
+        this.bullet3_inactive = this.add.image(80, 255, 'bullet_inactive', 0).setScale(0.5)
+        this.bullet2_inactive = this.add.image(80, 330, 'bullet_inactive', 0).setScale(0.5)
+        this.bullet1_inactive = this.add.image(80, 405, 'bullet_inactive', 0).setScale(0.5)
         
-        this.bullet3_active = this.add.image(70, 275, 'bullet_active', 0).setScale(0.5).setVisible(false)
-        this.bullet2_active = this.add.image(70, 350, 'bullet_active', 0).setScale(0.5).setVisible(false)
-        this.bullet1_active = this.add.image(70, 425, 'bullet_active', 0).setScale(0.5).setVisible(false)
+        this.bullet3_active = this.add.image(80, 255, 'bullet_active', 0).setScale(0.5).setVisible(false)
+        this.bullet2_active = this.add.image(80, 330, 'bullet_active', 0).setScale(0.5).setVisible(false)
+        this.bullet1_active = this.add.image(80, 405, 'bullet_active', 0).setScale(0.5).setVisible(false)
 
         //reticle
-        reticle = this.add.image(width/2, height/2, 'reticle').setScale(1.5).setDepth(5).setVisible(false)
+        reticle = this.add.image(width/2, height/2, 'reticle').setScale(1.5).setDepth(10).setVisible(false)
 
         this.noteGroup = this.add.group({
             runChildUpdate: true    
@@ -151,7 +159,7 @@ class Play extends Phaser.Scene{
         })
 
         this.enemySpawning = this.time.addEvent({
-            delay: 5000,
+            delay: 3000,
             callback: () => {
                 this.addEnemy()
             },
@@ -160,7 +168,7 @@ class Play extends Phaser.Scene{
 
         this.gameTimer = 60000
         this.timeInSeconds = this.gameTimer/1000;
-        this.timer = this.add.bitmapText(width/2, 50, font, this.timeInSeconds, 50).setOrigin(0.5).setDepth(5)
+        this.timer = this.add.bitmapText(width/2, 50, font, this.timeInSeconds, 50).setOrigin(0.5).setDepth(10)
         this.clock = this.time.delayedCall(this.gameTimer, () => {
             gameOver = true;
         }, null, this)
@@ -177,7 +185,7 @@ class Play extends Phaser.Scene{
     }
 
     addEnemy(){
-        let enemy = new Enemy(this, 'enemy', 0, 1)
+        let enemy = new Enemy(this, 'enemy1', 0, 1)
         this.enemyGroup.add(enemy)
     }
 
@@ -306,7 +314,7 @@ class Play extends Phaser.Scene{
             if (!scenePaused){
                 this.noteSpawning.paused = true
                 this.add.tween({
-                    targets: [this.speedControlPanel, this.speedTEXT, this.speedTEXTbackground],
+                    targets: [this.speedControlPanel, this.speedTEXT, this.speedTEXTbackground, this.AtoDecrease, this.quotetoIncrease, this.RtoRestart],
                     scale: {from: 0, to: 1},
                     duration: 100,
                     ease: 'linear'
@@ -317,7 +325,7 @@ class Play extends Phaser.Scene{
                     this.noteSpawning.paused = false
                 }
                 this.add.tween({
-                    targets: [this.speedControlPanel, this.speedTEXT, this.speedTEXTbackground],
+                    targets: [this.speedControlPanel, this.speedTEXT, this.speedTEXTbackground, this.AtoDecrease, this.quotetoIncrease, this.RtoRestart],
                     scale: {from: 1, to: 0},
                     duration: 100,
                     ease: 'linear'
