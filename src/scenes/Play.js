@@ -174,15 +174,14 @@ class Play extends Phaser.Scene{
             runChildUpdate: true
         })
 
-        /* this.enemySpawning = this.time.addEvent({
+        this.enemySpawning = this.time.addEvent({
             delay: 5000,
             callback: () => {
                 this.addEnemy()
             },
             loop: true
-        }) */
-
-        this.addEnemy()
+        }) 
+        
 
         this.gameTimer = 60000
         this.timeInSeconds = this.gameTimer/1000;
