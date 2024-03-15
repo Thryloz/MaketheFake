@@ -27,13 +27,15 @@ class Play extends Phaser.Scene{
         this.load.image('reticle', './assets/reticle.png')
         this.load.image('clickParticle', './assets/clickParticle.png')
 
-        this.load.image('enemy1', './assets/enemy1.png')
 
         this.load.audio('noteClick', ['./assets/back-button-hover.wav']);
+
+        this.load.image('enemy1', './assets/enemy sprites/enemy_frame1.png')
+        this.load.atlas('enemy_spritesheet', './assets/enemy_spritesheet.png', './assets/enemy_spritesheet.json')
     }
 
     create(){
-        speed = 5
+        speed = 1
         score = 0 
         maxCombo = 0
         combo = 0
@@ -104,8 +106,22 @@ class Play extends Phaser.Scene{
         this.keyFourInner = this.add.image(LANE_FOUR, game.config.height-80, "bluenoteclick_inner").setAlpha(0).setScale(0.5)
         this.keyFourOuter = this.add.image(LANE_FOUR, game.config.height-80, "bluenoteclick_outer").setAlpha(0).setScale(0.5)
 
+        this.keyOneInner_ghost = this.add.image(LANE_ONE, game.config.height-80, "bluenoteclick_inner").setAlpha(0.3).setScale(0.5)
+        this.keyOneOuter_ghost = this.add.image(LANE_ONE, game.config.height-80, "bluenoteclick_outer").setAlpha(0.3).setScale(0.5)
+        this.keyTwoInner_ghost = this.add.image(LANE_TWO, game.config.height-80, "bluenoteclick_inner").setAlpha(0.3).setScale(0.5)
+        this.keyTwoOuter_ghost = this.add.image(LANE_TWO, game.config.height-80, "bluenoteclick_outer").setAlpha(0.3).setScale(0.5)
+        this.keyThreeInner_ghost = this.add.image(LANE_THREE, game.config.height-80, "bluenoteclick_inner").setAlpha(0.3).setScale(0.5)
+        this.keyThreeOuter_ghost = this.add.image(LANE_THREE, game.config.height-80, "bluenoteclick_outer").setAlpha(0.3).setScale(0.5)
+        this.keyFourInner_ghost = this.add.image(LANE_FOUR, game.config.height-80, "bluenoteclick_inner").setAlpha(0.3).setScale(0.5)
+        this.keyFourOuter_ghost = this.add.image(LANE_FOUR, game.config.height-80, "bluenoteclick_outer").setAlpha(0.3).setScale(0.5)
+
+        this.lane_A = this.add.bitmapText(LANE_ONE, height-80, font, 'A', 35).setOrigin(0.5).setTint(0xFFFFFF)
+        this.lane_S = this.add.bitmapText(LANE_TWO, height-80, font, 'S', 35).setOrigin(0.5).setTint(0xFFFFFF)
+        this.lane_SEMICOLON = this.add.bitmapText(LANE_THREE, height-80, font, ';', 35).setOrigin(0.5).setTint(0xFFFFFF)
+        this.lane_COLON = this.add.bitmapText(LANE_FOUR, height-80, font, '\'', 35).setOrigin(0.5).setTint(0xFFFFFF)
+
         this.noteClick = this.sound.add('noteClick', { 
-            volume: .5,
+            volume: .5, 
             rate: 1,
             loop: false 
         });
@@ -158,13 +174,15 @@ class Play extends Phaser.Scene{
             runChildUpdate: true
         })
 
-        this.enemySpawning = this.time.addEvent({
-            delay: 3000,
+        /* this.enemySpawning = this.time.addEvent({
+            delay: 5000,
             callback: () => {
                 this.addEnemy()
             },
             loop: true
-        })
+        }) */
+
+        this.addEnemy()
 
         this.gameTimer = 60000
         this.timeInSeconds = this.gameTimer/1000;
@@ -182,6 +200,41 @@ class Play extends Phaser.Scene{
             rotate: 90,
             emitting: false
         }) */
+        if (!this.idle_animation){
+            this.idle_animation = this.anims.create({
+                key: 'idle',
+                frameRate: 8,
+                repeat: -1,
+                frames: this.anims.generateFrameNames('enemy_spritesheet', {
+                    prefix: 'enemy_frame',
+                    start: 1,
+                    end: 4
+                }),
+            })
+        }
+        if (!this.phase_out){
+            this.phase_out = this.anims.create({
+                key: 'phase_out',
+                frameRate: 12,
+                repeat: 0,
+                frames: this.anims.generateFrameNames('enemy_spritesheet', {
+                    prefix: 'enemy_teleport_',
+                    end: 3
+                }),
+            })
+        }
+        if (!this.phase_in){
+            this.phase_in = this.anims.create({
+                key: 'phase_in',
+                frameRate: 12,
+                repeat: 0,
+                frames: this.anims.generateFrameNames('enemy_spritesheet', {
+                    prefix: 'enemy_teleport_',
+                    start: 3,
+                    end: 0
+                }),
+            })
+        }
     }
 
     addEnemy(){

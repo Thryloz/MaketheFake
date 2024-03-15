@@ -20,11 +20,11 @@ class Menu extends Phaser.Scene{
         this.logo = this.add.image(width/2, 220, 'logo').setScale(1)
 
 
-        this.PLAY = this.add.bitmapText(width/2, 400, 'gem', 'PLAY', 64).setOrigin(0.5).setTint(0xA020F0).setScale(1.2);
+        this.PLAY = this.add.bitmapText(width/2, 400, 'gem', 'PLAY', 64).setOrigin(0.5).setTint(0xA020F0).setScale(1.5);
         this.TUTORIAL = this.add.bitmapText(width/2, 500, 'gem', 'TUTORIAL', 64).setOrigin(0.5).setTint(0xFFFFFF);
         this.CREDITS = this.add.bitmapText(width/2, 600, 'gem', 'CREDITS', 64).setOrigin(0.5).setTint(0xA020F0);
 
-        this.add.bitmapText(width/2, 680, 'gem', 'Press SPACE to select', 50).setTint(0xffffff).setOrigin(0.5);
+        this.add.bitmapText(width/2, 680, 'gem', 'Press SPACE to select', 30).setTint(0xffffff).setOrigin(0.5);
 
 
         this.cursor = 400

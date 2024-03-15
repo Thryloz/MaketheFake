@@ -15,7 +15,7 @@ let config = {
     },
     pixelArt: true,
     //scene: [ Play, Menu, Credits, ScoreScreen]
-    scene: [ Menu, Play, Tutorial, Credits, ScoreScreen]
+    scene: [ Play, Menu, Tutorial, Credits, ScoreScreen]
 }
 
 let game = new Phaser.Game(config);
