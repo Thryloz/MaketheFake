@@ -19,7 +19,6 @@ class Enemy extends Phaser.GameObjects.Sprite{
         this.setScale(this.scale)
 
 
-        this.debugRectangle = this.scene.add.rectangle(this.x, this.y, this.width * this.scale, this.height * this.scale, 0xFF0000, 0.5)
     }
 
     update(){
@@ -28,13 +27,16 @@ class Enemy extends Phaser.GameObjects.Sprite{
             this.anims.play('phase_out', true)
             this.time = 0
             this.scale += 0.1
-            this.depth++;
-            this.setRandomPosition(150, 140, 780, 430)  
-            this.anims.play('phase_in', true)
-            this.anims.play('idle', true)
-            this.debugRectangle.destroy()
-            //console.log(this.scale)
-            //this.debugRectangle = this.scene.add.rectangle(this.x, this.y, this.width * this.scale, this.height * this.scale, 0xFF0000, 0.5)
+            this.depth++; 
+            this.scene.time.delayedCall(300, () => {
+                this.setRandomPosition(150, 140, 780, 430)  
+            }, null, this)
+            this.scene.time.delayedCall(350, () => {
+                this.anims.play('phase_in', true)
+            }, null, this)
+            this.scene.time.delayedCall(600, () => {
+                this.anims.play('idle', true)
+            }, null, this)
         }
         if (reticle.x > this.x - (this.width * this.scale)/2 && reticle.x < this.x + (this.width * this.scale)/2 && reticle.y > this.y - (this.height * this.scale)/2 && reticle.y < this.y + (this.height * this.scale)/2){
             this.targeted = true

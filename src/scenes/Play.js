@@ -115,10 +115,10 @@ class Play extends Phaser.Scene{
         this.keyFourInner_ghost = this.add.image(LANE_FOUR, game.config.height-80, "bluenoteclick_inner").setAlpha(0.3).setScale(0.5)
         this.keyFourOuter_ghost = this.add.image(LANE_FOUR, game.config.height-80, "bluenoteclick_outer").setAlpha(0.3).setScale(0.5)
 
-        this.lane_A = this.add.bitmapText(LANE_ONE, height-80, font, 'A', 35).setOrigin(0.5).setTint(0xFFFFFF)
-        this.lane_S = this.add.bitmapText(LANE_TWO, height-80, font, 'S', 35).setOrigin(0.5).setTint(0xFFFFFF)
-        this.lane_SEMICOLON = this.add.bitmapText(LANE_THREE, height-80, font, ';', 35).setOrigin(0.5).setTint(0xFFFFFF)
-        this.lane_COLON = this.add.bitmapText(LANE_FOUR, height-80, font, '\'', 35).setOrigin(0.5).setTint(0xFFFFFF)
+        this.lane_A = this.add.bitmapText(LANE_ONE, height-80, font, 'A', 35).setOrigin(0.5).setTint(0xFFFFFF).setDepth(10)
+        this.lane_S = this.add.bitmapText(LANE_TWO, height-80, font, 'S', 35).setOrigin(0.5).setTint(0xFFFFFF).setDepth(10)
+        this.lane_SEMICOLON = this.add.bitmapText(LANE_THREE, height-80, font, ';', 35).setOrigin(0.5).setTint(0xFFFFFF).setDepth(10)
+        this.lane_COLON = this.add.bitmapText(LANE_FOUR, height-80, font, '\'', 35).setOrigin(0.5).setTint(0xFFFFFF).setDepth(10)
 
         this.noteClick = this.sound.add('noteClick', { 
             volume: .5, 
@@ -181,7 +181,6 @@ class Play extends Phaser.Scene{
             },
             loop: true
         }) 
-        
 
         this.gameTimer = 60000
         this.timeInSeconds = this.gameTimer/1000;
