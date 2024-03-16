@@ -79,12 +79,12 @@ class Play extends Phaser.Scene{
         //this.up = this.add.rectangle(width/2, 140, width, 2, 0xFF0000, 0.5)
         //this.point = this.add.image(200,180, 'none')
 
-        visibleZone = this.add.rectangle(game.config.width/2, game.config.height-150, game.config.width, 2, 0xFF0000, 0.5)
-        excellentZone = this.add.rectangle(visibleZone.x, visibleZone.y, game.config.width, 15, 0x4169E1, 0)
+        visibleZone = this.add.rectangle(game.config.width/2, game.config.height-155, game.config.width, 5, 0xFF0000, 0.5)
+        /* excellentZone = this.add.rectangle(visibleZone.x, visibleZone.y, game.config.width, 15, 0x4169E1, 0)
         perfectZone = this.add.rectangle(visibleZone.x, visibleZone.y, game.config.width, 40, 0xA020F0, 0)
         goodZone = this.add.rectangle(visibleZone.x, visibleZone.y, game.config.width, 70, 0xA02AF0, 0)
         badZone = this.add.rectangle(visibleZone.x, visibleZone.y, game.config.width, 100, 0xAAAAF0, 0)
-        missZone = this.add.rectangle(visibleZone.x, visibleZone.y, game.config.width, 150, 0xAAAAF0, 0)
+        missZone = this.add.rectangle(visibleZone.x, visibleZone.y, game.config.width, 150, 0xAAAAF0, 0) */
 
         excellentTEXT = this.add.bitmapText(width/2, visibleZone.y-150, font, 'EXCELLENT', 50).setOrigin(0.5).setTint(0xffffff).setAlpha(0).setDepth(10);
         perfectTEXT = this.add.bitmapText(width/2, visibleZone.y-150, font, 'PERFECT', 50).setOrigin(0.5).setTint(0xffffff).setAlpha(0).setDepth(10);
@@ -132,16 +132,20 @@ class Play extends Phaser.Scene{
         // speed control panel
         this.speedControlPanel = this.add.rectangle(width/2, height/2, width/2, height/2, 0x301934, 1).setStrokeStyle(2, 0xA020F0, 1).setScale(0)
         this.speedControlPanel.setDepth(8)
-        this.speedTEXTbackground = this.add.rectangle(width/2, height/2 - 80, 50, 65, 0x887191, 1).setStrokeStyle(2, 0xA020F0, 1).setScale(0)
+        this.speedTEXTbackground = this.add.rectangle(width/2, height/2 - 80, 80, 65, 0x887191, 1).setStrokeStyle(2, 0xA020F0, 1).setScale(0)
         this.speedTEXTbackground.setDepth(9)
         this.speedTEXT = this.add.bitmapText(width/2, height/2 - 80, font, speed, 50).setOrigin(0.5).setTint(0xFFFFFF).setScale(0)
         this.speedTEXT.setDepth(10)
+        this.closeSpeedControl = this.add.bitmapText(width/2, height/2 - 150, font, 'TAB to close panel', 50).setOrigin(0.5).setTint(0xFFFFFF).setScale(0)
         this.AtoDecrease = this.add.bitmapText(width/2, height/2, font, 'A to decrease speed', 50).setOrigin(0.5).setTint(0xFFFFFF).setScale(0)
         this.quotetoIncrease = this.add.bitmapText(width/2, height/2 + 50, font, '\' to increase speed', 50).setOrigin(0.5).setTint(0xFFFFFF).setScale(0)
         this.RtoRestart = this.add.bitmapText(width/2, height/2 + 100, font, 'R to restart', 50).setOrigin(0.5).setTint(0xFFFFFF).setScale(0)
+        this.goBacktoMenu = this.add.bitmapText(width/2, height/2 + 150, font, 'SPACE to go back to menu', 40).setOrigin(0.5).setTint(0xFFFFFF).setScale(0)
         this.AtoDecrease.setDepth(10)
+        this.closeSpeedControl.setDepth(10)
         this.quotetoIncrease.setDepth(10)
         this.RtoRestart.setDepth(10)
+        this.goBacktoMenu.setDepth(10)
 
         // https://newdocs.phaser.io/docs/3.60.0/Phaser.GameObjects.NineSlice#setSize
         chargeUI = this.add.nineslice(game.config.width-70, game.config.height/2 - 50, 'charge_level_ui', 0, 50)
@@ -179,7 +183,7 @@ class Play extends Phaser.Scene{
         })
 
         this.enemySpawning = this.time.addEvent({
-            delay: 5000,
+            delay: 4000,
             callback: () => {
                 this.addEnemy()
             },
@@ -296,10 +300,7 @@ class Play extends Phaser.Scene{
 
     // manages note timing
     noteJudgement(note){
-        this.flash = this.add.image(note.x, note.y, 'click_flash', 0).setDepth(10)
-        this.flash.scaleX = 3
-        this.flash.postFX.addGlow(0xFFFFFF, 3, 0)
-        this.flash.postFX.addGlow(0xFFD700, 0, 3)
+        
         if ((note.y > visibleZone.y-15 && note.y < visibleZone.y) || (note.y < visibleZone.y+ 15 && note.y > visibleZone.y)){
             this.tweens.add({
                 targets: excellentTEXT,
@@ -313,6 +314,23 @@ class Play extends Phaser.Scene{
             charge_level += excellentCHARGE
             combo++
             excellentCOUNT++
+            this.flash = this.add.image(note.x, note.y, 'click_flash', 0).setDepth(10)
+            this.flash.scaleX = 3
+            this.flash.postFX.addGlow(0xFFFFFF, 3, 0)
+            this.flash.postFX.addGlow(0xFFD700, 0, 3)
+            this.add.tween({
+                targets: this.flash,
+                scale: {from: 3, to: 0},
+                alpha: {from: 1, to: 0},
+                duration: 100,
+                ease: 'linear'
+            })
+            this.time.addEvent({
+                delay: 100,
+                callback: () => {
+                    this.flash.destroy()
+                },
+            })
             note.destroy()
         } else if ((note.y > visibleZone.y-40 && note.y < visibleZone.y + 15) || (note.y < visibleZone.y+40 && note.y > visibleZone.y+15)){
             this.tweens.add({
@@ -327,6 +345,23 @@ class Play extends Phaser.Scene{
             charge_level += perfectCHARGE
             combo++
             perfectCOUNT++
+            this.flash = this.add.image(note.x, note.y, 'click_flash', 0).setDepth(10)
+            this.flash.scaleX = 3
+            this.flash.postFX.addGlow(0xFFFFFF, 3, 0)
+            this.flash.postFX.addGlow(0xFFD700, 0, 3)
+            this.add.tween({
+                targets: this.flash,
+                scale: {from: 3, to: 0},
+                alpha: {from: 1, to: 0},
+                duration: 100,
+                ease: 'linear'
+            })
+            this.time.addEvent({
+                delay: 100,
+                callback: () => {
+                    this.flash.destroy()
+                },
+            })
             note.destroy()
         } else if ((note.y > visibleZone.y-70 && note.y < visibleZone.y + 40)|| (note.y < visibleZone.y+70 && note.y > visibleZone.y+40)){
             this.tweens.add({
@@ -341,6 +376,23 @@ class Play extends Phaser.Scene{
             charge_level += goodCHARGE
             combo++
             goodCOUNT++
+            this.flash = this.add.image(note.x, note.y, 'click_flash', 0).setDepth(10)
+            this.flash.scaleX = 3
+            this.flash.postFX.addGlow(0xFFFFFF, 3, 0)
+            this.flash.postFX.addGlow(0xFFD700, 0, 3)
+            this.add.tween({
+                targets: this.flash,
+                scale: {from: 3, to: 0},
+                alpha: {from: 1, to: 0},
+                duration: 100,
+                ease: 'linear'
+            })
+            this.time.addEvent({
+                delay: 100,
+                callback: () => {
+                    this.flash.destroy()
+                },
+            })
             note.destroy()
         } else if ((note.y > visibleZone.y-100 && note.y < visibleZone.y + 70) || (note.y < visibleZone.y+100 && note.y > visibleZone.y+70)){
             this.tweens.add({
@@ -355,6 +407,24 @@ class Play extends Phaser.Scene{
             combo = 0
             badCOUNT++
             note.destroy()
+            this.flash = this.add.image(note.x, note.y, 'click_flash', 0).setDepth(10)
+            this.flash.scaleX = 3
+            this.flash.postFX.addGlow(0xFFFFFF, 3, 0)
+            this.flash.postFX.addGlow(0xFFD700, 0, 3)
+            this.add.tween({
+                targets: this.flash,
+                scale: {from: 3, to: 0},
+                alpha: {from: 1, to: 0},
+                duration: 100,
+                ease: 'linear'
+            })
+            this.time.addEvent({
+                delay: 100,
+                callback: () => {
+                    this.flash.destroy()
+                },
+            })
+            note.destroy()
         } else if ((note.y > visibleZone.y-150 && note.y < visibleZone.y + 100) || note.y > visibleZone.y+150){
             this.tweens.add({
                 targets: missTEXT,
@@ -365,23 +435,28 @@ class Play extends Phaser.Scene{
                 repeat: 0,
             });
             charge_level += missCHARGE
-             combo = 0
+            combo = 0
             missCOUNT++ 
+            this.flash = this.add.image(note.x, note.y, 'click_flash', 0).setDepth(10)
+            this.flash.scaleX = 3
+            this.flash.postFX.addGlow(0xFFFFFF, 3, 0)
+            this.flash.postFX.addGlow(0xFFD700, 0, 3)
+            this.add.tween({
+                targets: this.flash,
+                scale: {from: 3, to: 0},
+                alpha: {from: 1, to: 0},
+                duration: 100,
+                ease: 'linear'
+            })
+            this.time.addEvent({
+                delay: 100,
+                callback: () => {
+                    this.flash.destroy()
+                },
+            })
             note.destroy()
         } 
-        this.add.tween({
-            targets: this.flash,
-            scale: {from: 3, to: 0},
-            alpha: {from: 1, to: 0},
-            duration: 100,
-            ease: 'linear'
-        })
-        this.time.addEvent({
-            delay: 100,
-            callback: () => {
-                this.flash.destroy()
-            },
-        })
+        
         
         
         if (combo > maxCombo){
@@ -399,7 +474,7 @@ class Play extends Phaser.Scene{
             if (!scenePaused){
                 this.noteSpawning.paused = true
                 this.add.tween({
-                    targets: [this.speedControlPanel, this.speedTEXT, this.speedTEXTbackground, this.AtoDecrease, this.quotetoIncrease, this.RtoRestart],
+                    targets: [this.closeSpeedControl, this.speedControlPanel, this.speedTEXT, this.speedTEXTbackground, this.AtoDecrease, this.quotetoIncrease, this.RtoRestart, this.goBacktoMenu],
                     scale: {from: 0, to: 1},
                     duration: 100,
                     ease: 'linear'
@@ -410,7 +485,7 @@ class Play extends Phaser.Scene{
                     this.noteSpawning.paused = false
                 }
                 this.add.tween({
-                    targets: [this.speedControlPanel, this.speedTEXT, this.speedTEXTbackground, this.AtoDecrease, this.quotetoIncrease, this.RtoRestart],
+                    targets: [this.closeSpeedControl, this.speedControlPanel, this.speedTEXT, this.speedTEXTbackground, this.AtoDecrease, this.quotetoIncrease, this.RtoRestart, this.goBacktoMenu],
                     scale: {from: 1, to: 0},
                     duration: 100,
                     ease: 'linear'
@@ -472,6 +547,8 @@ class Play extends Phaser.Scene{
                 aimMode = false
                 scenePaused = false
                 this.scene.restart()
+            } else if (Phaser.Input.Keyboard.JustDown(keySPACE)){
+                this.scene.start('menuScene')
             }
             this.noteSpawning.delay = -369.1503 * Math.log(0.0666085*speed)
             this.speedTEXT.setText(speed)

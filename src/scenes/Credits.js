@@ -3,15 +3,12 @@ class Credits extends Phaser.Scene{
         super("creditsScene")
     }
 
-    create() {
-
-        
+    create() {        
         this.CREDITS = this.add.bitmapText(140, 60, 'gem', 'CREDITS', 64).setOrigin(0.5).setTint(0xffffff);
 
         let font_size = 24;
         this.add.bitmapText(300, 150, 'gem', 'Programming, and Art by Jim Lee', font_size).setOrigin(0.5).setTint(0xffffff);
-        this.add.bitmapText(340, 200, 'gem', 'Background Music: A Centralized View by VINXIS', font_size).setOrigin(0.5).setTint(0xffffff);
-        this.add.bitmapText(300, 250, 'gem', 'https://vinxis.moe/', font_size).setOrigin(0.5).setTint(0xffffff);
+        this.add.bitmapText(430, 200, 'gem', 'Design and Inspiration by Hoyoverse: Honkai Star Rail', font_size).setOrigin(0.5).setTint(0xffffff);
         this.add.bitmapText(443, 300, 'gem', 'https://www.youtube.com/watch?v=K5UL_RxK0lk', font_size).setOrigin(0.5).setTint(0xffffff);
         this.add.bitmapText(220, 350, 'gem', 'Menu Fire sfx by leosalom', font_size).setOrigin(0.5).setTint(0xffffff);
         this.add.bitmapText(500, 400, 'gem', 'https://freesound.org/people/leosalom/sounds/234288/', font_size).setOrigin(0.5).setTint(0xffffff);
