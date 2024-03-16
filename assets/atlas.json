@@ -1,0 +1,392 @@
+{
+    "frames": [
+        {
+            "filename": "pausebutton",
+            "frame": {
+                "x": 1081,
+                "y": 434,
+                "w": 64,
+                "h": 64
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 64,
+                "h": 64
+            },
+            "sourceSize": {
+                "w": 64,
+                "h": 64
+            }
+        },
+        {
+            "filename": "pink_note",
+            "frame": {
+                "x": 1081,
+                "y": 2110,
+                "w": 32,
+                "h": 32
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 32,
+                "h": 32
+            },
+            "sourceSize": {
+                "w": 32,
+                "h": 32
+            }
+        },
+        {
+            "filename": "reticle",
+            "frame": {
+                "x": 1081,
+                "y": 2044,
+                "w": 32,
+                "h": 32
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 32,
+                "h": 32
+            },
+            "sourceSize": {
+                "w": 32,
+                "h": 32
+            }
+        },
+        {
+            "filename": "ui",
+            "frame": {
+                "x": 0,
+                "y": 721,
+                "w": 1080,
+                "h": 720
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 1080,
+                "h": 720
+            },
+            "sourceSize": {
+                "w": 1080,
+                "h": 720
+            }
+        },
+        {
+            "filename": "blue_note",
+            "frame": {
+                "x": 1081,
+                "y": 499,
+                "w": 32,
+                "h": 32
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 32,
+                "h": 32
+            },
+            "sourceSize": {
+                "w": 32,
+                "h": 32
+            }
+        },
+        {
+            "filename": "bluenoteclick_center",
+            "frame": {
+                "x": 1081,
+                "y": 1643,
+                "w": 400,
+                "h": 400
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 400,
+                "h": 400
+            },
+            "sourceSize": {
+                "w": 400,
+                "h": 400
+            }
+        },
+        {
+            "filename": "bluenoteclick_inner",
+            "frame": {
+                "x": 1081,
+                "y": 807,
+                "w": 400,
+                "h": 400
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 400,
+                "h": 400
+            },
+            "sourceSize": {
+                "w": 400,
+                "h": 400
+            }
+        },
+        {
+            "filename": "bluenoteclick_outer",
+            "frame": {
+                "x": 1081,
+                "y": 0,
+                "w": 400,
+                "h": 400
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 400,
+                "h": 400
+            },
+            "sourceSize": {
+                "w": 400,
+                "h": 400
+            }
+        },
+        {
+            "filename": "bullet_active",
+            "frame": {
+                "x": 1081,
+                "y": 1442,
+                "w": 200,
+                "h": 200
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 200,
+                "h": 200
+            },
+            "sourceSize": {
+                "w": 200,
+                "h": 200
+            }
+        },
+        {
+            "filename": "bullet_inactive",
+            "frame": {
+                "x": 1081,
+                "y": 1241,
+                "w": 200,
+                "h": 200
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 200,
+                "h": 200
+            },
+            "sourceSize": {
+                "w": 200,
+                "h": 200
+            }
+        },
+        {
+            "filename": "chargelevelui",
+            "frame": {
+                "x": 1081,
+                "y": 565,
+                "w": 50,
+                "h": 241
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 50,
+                "h": 241
+            },
+            "sourceSize": {
+                "w": 50,
+                "h": 241
+            }
+        },
+        {
+            "filename": "clickflash",
+            "frame": {
+                "x": 1081,
+                "y": 1208,
+                "w": 32,
+                "h": 32
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 32,
+                "h": 32
+            },
+            "sourceSize": {
+                "w": 32,
+                "h": 32
+            }
+        },
+        {
+            "filename": "cyan_note",
+            "frame": {
+                "x": 1081,
+                "y": 401,
+                "w": 32,
+                "h": 32
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 32,
+                "h": 32
+            },
+            "sourceSize": {
+                "w": 32,
+                "h": 32
+            }
+        },
+        {
+            "filename": "fillbar",
+            "frame": {
+                "x": 1081,
+                "y": 2143,
+                "w": 39,
+                "h": 13
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 39,
+                "h": 13
+            },
+            "sourceSize": {
+                "w": 39,
+                "h": 13
+            }
+        },
+        {
+            "filename": "green_note",
+            "frame": {
+                "x": 1081,
+                "y": 2077,
+                "w": 32,
+                "h": 32
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 32,
+                "h": 32
+            },
+            "sourceSize": {
+                "w": 32,
+                "h": 32
+            }
+        },
+        {
+            "filename": "logo",
+            "frame": {
+                "x": 0,
+                "y": 1442,
+                "w": 1080,
+                "h": 720
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 1080,
+                "h": 720
+            },
+            "sourceSize": {
+                "w": 1080,
+                "h": 720
+            }
+        },
+        {
+            "filename": "makethefakebackground",
+            "frame": {
+                "x": 0,
+                "y": 0,
+                "w": 1080,
+                "h": 720
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 1080,
+                "h": 720
+            },
+            "sourceSize": {
+                "w": 1080,
+                "h": 720
+            }
+        },
+        {
+            "filename": "orange_note",
+            "frame": {
+                "x": 1081,
+                "y": 532,
+                "w": 32,
+                "h": 32
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 32,
+                "h": 32
+            },
+            "sourceSize": {
+                "w": 32,
+                "h": 32
+            }
+        }
+    ],
+    "meta": {
+        "app": "https://www.leshylabs.com/apps/sstool/",
+        "version": "Leshy SpriteSheet Tool v0.8.4",
+        "image": "atlas.png",
+        "size": {
+            "w": 1481,
+            "h": 2162
+        },
+        "scale": 1
+    }
+}

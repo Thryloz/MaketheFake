@@ -4,10 +4,17 @@ class Menu extends Phaser.Scene{
         super('menuScene');
     }
     preload(){
-        this.load.bitmapFont('gem', './assets/gem.png', './assets/gem.xml'); // yoinked from example
-        this.load.image('logo', './assets/logo.png');
+        this.load.bitmapFont('gem', './assets/gem.png', './assets/gem.xml'); 
+        this.load.atlas('asset_atlas', './assets/atlas.png', './assets/atlas.json')
 
-        this.load.image('background', './assets/makethefakebackground.png')
+        // notes
+        this.load.image('blue_note', './assets/blue_note.png')
+        this.load.image('cyan_note', './assets/cyan_note.png')
+        this.load.image('green_note', './assets/green_note.png')
+        this.load.image('orange_note', './assets/orange_note.png')
+        this.load.image('pink_note', './assets/pink_note.png')
+        this.load.image('charge_level_ui', './assets/chargelevelui.png')
+        this.load.image('fill_bar', './assets/fillbar.png')
 
         // bgm
         this.load.audio('bgm', './assets/silverwolf_theme_tnbmix.wav')
@@ -26,12 +33,14 @@ class Menu extends Phaser.Scene{
     }
 
     create(){
-        this.background = this.add.image(width/2, height/2, 'background').setAlpha(0.2)
+        // input
         this.keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
         this.keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
-        this.logo = this.add.image(width/2, 220, 'logo').setScale(1)
+        // background and logo
+        this.background = this.add.image(width/2, height/2, 'asset_atlas', 'makethefakebackground').setAlpha(0.2)
+        this.logo = this.add.image(width/2, 220, 'asset_atlas', 'logo').setScale(1)
 
         this.logo_tween = this.tweens.add({
             targets: this.logo,
@@ -44,16 +53,16 @@ class Menu extends Phaser.Scene{
 
         this.logo_tween.play()
 
-
+        // text
         this.PLAY = this.add.bitmapText(width/2, 400, 'gem', 'PLAY', 64).setOrigin(0.5).setTint(0xFFFFFF).setScale(1.2);
         this.TUTORIAL = this.add.bitmapText(width/2, 500, 'gem', 'TUTORIAL', 64).setOrigin(0.5).setTint(0xA020F0);
         this.CREDITS = this.add.bitmapText(width/2, 600, 'gem', 'CREDITS', 64).setOrigin(0.5).setTint(0xA020F0);
-
         this.instructions = this.add.bitmapText(width/2, 680, 'gem', 'Press SPACE to select and arrow keys to move', 30).setTint(0xffffff).setOrigin(0.5);
 
 
         this.cursor = 400
 
+        // text animations
         this.animation_playing = false
         this.play_tween = this.tweens.add({
             targets: this.PLAY,
@@ -80,6 +89,7 @@ class Menu extends Phaser.Scene{
         this.tutorial_tween.pause()
         this.credits_tween.pause()
 
+        // sound
         this.slow_mode = this.sound.add('slow_mode', { 
             mute: false,
             volume: 3,

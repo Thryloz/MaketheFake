@@ -3,6 +3,7 @@ class Note extends Phaser.Physics.Arcade.Sprite {
         let spawnLanePosition = [LANE_ONE, LANE_TWO, LANE_THREE, LANE_FOUR];
         let spawnLane = Math.floor(Math.random() * 4);
         // scene, x, y, sprite name
+        texture = 
         super(scene, spawnLanePosition[spawnLane], y, texture);
         this.scene.add.existing(this);
         this.speed = speed

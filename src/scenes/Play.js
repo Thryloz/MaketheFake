@@ -3,31 +3,7 @@ class Play extends Phaser.Scene{
         super('playScene')
     }
 
-    // delete later
     preload(){
-        this.load.bitmapFont('gem', './assets/gem.png', './assets/gem.xml');
-        this.load.image('background', './assets/makethefakebackground.png')
-        this.load.image('charge_level_ui', './assets/chargelevelui.png');
-        this.load.image('fill_bar', './assets/fillbar.png');
-        this.load.image('UI', './assets/ui.png');
-        this.load.image('pause_button', './assets/pausebutton.png');
-
-        this.load.image('bluenoteclick_center', './assets/bluenoteclick_center.png')
-        this.load.image('bluenoteclick_inner', './assets/bluenoteclick_inner.png')
-        this.load.image('bluenoteclick_outer', './assets/bluenoteclick_outer.png')
-        this.load.image('bullet_active', './assets/bullet_active.png')
-        this.load.image('bullet_inactive', './assets/bullet_inactive.png')
-
-        this.load.image('blue_note', './assets/blue_note.png')
-        this.load.image('cyan_note', './assets/cyan_note.png')
-        this.load.image('green_note', './assets/green_note.png')
-        this.load.image('orange_note', './assets/orange_note.png')
-        this.load.image('pink_note', './assets/pink_note.png')
-        this.load.image('click_flash', './assets/clickflash.png')
-
-        this.load.image('reticle', './assets/reticle.png')
-        this.load.image('clickParticle', './assets/clickParticle.png')
-
         this.load.image('enemy1', './assets/enemy sprites/enemy_frame1.png')
         this.load.atlas('enemy_spritesheet', './assets/enemy_spritesheet.png', './assets/enemy_spritesheet.json')
     }
@@ -87,9 +63,9 @@ class Play extends Phaser.Scene{
         keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN)
 
         //BACKGROUND AND UI
-        this.background = this.add.image(width/2, height/2, 'background')
-        this.UI = this.add.image(width/2, height/2, 'UI').setDepth(10)
-        this.pauseButton = this.add.image(120, 120, 'pause_button').setScale(2).setDepth(10)
+        this.background = this.add.image(width/2, height/2, 'asset_atlas', 'makethefakebackground')
+        this.UI = this.add.image(width/2, height/2, 'asset_atlas', 'ui').setDepth(10)
+        this.pauseButton = this.add.image(120, 120, 'asset_atlas', 'pausebutton').setScale(2).setDepth(10)
 
         //this.leftRect = this.add.rectangle(150, height/2, 2, game.config.height, 0xFF0000, 0.5)
         //this.rightRect = this.add.rectangle(930, height/2, 2, game.config.height, 0xFF0000, 0.5)
@@ -113,27 +89,27 @@ class Play extends Phaser.Scene{
         this.comboTEXT = this.add.bitmapText(770, 110, font, 'COMBO', 35).setOrigin(0.5).setTint(0xc1c6fc).setDepth(10).setRotation(-0.07);
         this.comboNUMBER = this.add.bitmapText(850, 100, font, combo, 35).setOrigin(0.5).setTint(0xc1c6fc).setDepth(10).setRotation(-0.07);
 
-        this.keyOneCenter = this.add.image(LANE_ONE, game.config.height-80, "bluenoteclick_center").setAlpha(0).setScale(0.5)
-        this.keyOneInner = this.add.image(LANE_ONE, game.config.height-80, "bluenoteclick_inner").setAlpha(0).setScale(0.5)
-        this.keyOneOuter = this.add.image(LANE_ONE, game.config.height-80, "bluenoteclick_outer").setAlpha(0).setScale(0.5)
-        this.keyTwoCenter = this.add.image(LANE_TWO, game.config.height-80, "bluenoteclick_center").setAlpha(0).setScale(0.5)
-        this.keyTwoInner = this.add.image(LANE_TWO, game.config.height-80, "bluenoteclick_inner").setAlpha(0).setScale(0.5)
-        this.keyTwoOuter = this.add.image(LANE_TWO, game.config.height-80, "bluenoteclick_outer").setAlpha(0).setScale(0.5)
-        this.keyThreeCenter = this.add.image(LANE_THREE, game.config.height-80, "bluenoteclick_center").setAlpha(0).setScale(0.5)
-        this.keyThreeInner = this.add.image(LANE_THREE, game.config.height-80, "bluenoteclick_inner").setAlpha(0).setScale(0.5)
-        this.keyThreeOuter = this.add.image(LANE_THREE, game.config.height-80, "bluenoteclick_outer").setAlpha(0).setScale(0.5)
-        this.keyFourCenter = this.add.image(LANE_FOUR, game.config.height-80, "bluenoteclick_center").setAlpha(0).setScale(0.5)
-        this.keyFourInner = this.add.image(LANE_FOUR, game.config.height-80, "bluenoteclick_inner").setAlpha(0).setScale(0.5)
-        this.keyFourOuter = this.add.image(LANE_FOUR, game.config.height-80, "bluenoteclick_outer").setAlpha(0).setScale(0.5)
+        this.keyOneCenter = this.add.image(LANE_ONE, game.config.height-80, 'asset_atlas', "bluenoteclick_center").setAlpha(0).setScale(0.5)
+        this.keyOneInner = this.add.image(LANE_ONE, game.config.height-80, 'asset_atlas', "bluenoteclick_inner").setAlpha(0).setScale(0.5)
+        this.keyOneOuter = this.add.image(LANE_ONE, game.config.height-80, 'asset_atlas', "bluenoteclick_outer").setAlpha(0).setScale(0.5)
+        this.keyTwoCenter = this.add.image(LANE_TWO, game.config.height-80, 'asset_atlas', "bluenoteclick_center").setAlpha(0).setScale(0.5)
+        this.keyTwoInner = this.add.image(LANE_TWO, game.config.height-80, 'asset_atlas', "bluenoteclick_inner").setAlpha(0).setScale(0.5)
+        this.keyTwoOuter = this.add.image(LANE_TWO, game.config.height-80, 'asset_atlas', "bluenoteclick_outer").setAlpha(0).setScale(0.5)
+        this.keyThreeCenter = this.add.image(LANE_THREE, game.config.height-80, 'asset_atlas', "bluenoteclick_center").setAlpha(0).setScale(0.5)
+        this.keyThreeInner = this.add.image(LANE_THREE, game.config.height-80, 'asset_atlas', "bluenoteclick_inner").setAlpha(0).setScale(0.5)
+        this.keyThreeOuter = this.add.image(LANE_THREE, game.config.height-80, 'asset_atlas', "bluenoteclick_outer").setAlpha(0).setScale(0.5)
+        this.keyFourCenter = this.add.image(LANE_FOUR, game.config.height-80, 'asset_atlas', "bluenoteclick_center").setAlpha(0).setScale(0.5)
+        this.keyFourInner = this.add.image(LANE_FOUR, game.config.height-80, 'asset_atlas', "bluenoteclick_inner").setAlpha(0).setScale(0.5)
+        this.keyFourOuter = this.add.image(LANE_FOUR, game.config.height-80, 'asset_atlas', "bluenoteclick_outer").setAlpha(0).setScale(0.5)
 
-        this.keyOneInner_ghost = this.add.image(LANE_ONE, game.config.height-80, "bluenoteclick_inner").setAlpha(0.3).setScale(0.5)
-        this.keyOneOuter_ghost = this.add.image(LANE_ONE, game.config.height-80, "bluenoteclick_outer").setAlpha(0.3).setScale(0.5)
-        this.keyTwoInner_ghost = this.add.image(LANE_TWO, game.config.height-80, "bluenoteclick_inner").setAlpha(0.3).setScale(0.5)
-        this.keyTwoOuter_ghost = this.add.image(LANE_TWO, game.config.height-80, "bluenoteclick_outer").setAlpha(0.3).setScale(0.5)
-        this.keyThreeInner_ghost = this.add.image(LANE_THREE, game.config.height-80, "bluenoteclick_inner").setAlpha(0.3).setScale(0.5)
-        this.keyThreeOuter_ghost = this.add.image(LANE_THREE, game.config.height-80, "bluenoteclick_outer").setAlpha(0.3).setScale(0.5)
-        this.keyFourInner_ghost = this.add.image(LANE_FOUR, game.config.height-80, "bluenoteclick_inner").setAlpha(0.3).setScale(0.5)
-        this.keyFourOuter_ghost = this.add.image(LANE_FOUR, game.config.height-80, "bluenoteclick_outer").setAlpha(0.3).setScale(0.5)
+        this.keyOneInner_ghost = this.add.image(LANE_ONE, game.config.height-80, 'asset_atlas', "bluenoteclick_inner").setAlpha(0.3).setScale(0.5)
+        this.keyOneOuter_ghost = this.add.image(LANE_ONE, game.config.height-80, 'asset_atlas', "bluenoteclick_outer").setAlpha(0.3).setScale(0.5)
+        this.keyTwoInner_ghost = this.add.image(LANE_TWO, game.config.height-80, 'asset_atlas', "bluenoteclick_inner").setAlpha(0.3).setScale(0.5)
+        this.keyTwoOuter_ghost = this.add.image(LANE_TWO, game.config.height-80, 'asset_atlas', "bluenoteclick_outer").setAlpha(0.3).setScale(0.5)
+        this.keyThreeInner_ghost = this.add.image(LANE_THREE, game.config.height-80, 'asset_atlas', "bluenoteclick_inner").setAlpha(0.3).setScale(0.5)
+        this.keyThreeOuter_ghost = this.add.image(LANE_THREE, game.config.height-80, 'asset_atlas', "bluenoteclick_outer").setAlpha(0.3).setScale(0.5)
+        this.keyFourInner_ghost = this.add.image(LANE_FOUR, game.config.height-80, 'asset_atlas', "bluenoteclick_inner").setAlpha(0.3).setScale(0.5)
+        this.keyFourOuter_ghost = this.add.image(LANE_FOUR, game.config.height-80, 'asset_atlas', "bluenoteclick_outer").setAlpha(0.3).setScale(0.5)
 
         this.lane_A = this.add.bitmapText(LANE_ONE, height-80, font, 'A', 35).setOrigin(0.5).setTint(0xFFFFFF).setDepth(10)
         this.lane_S = this.add.bitmapText(LANE_TWO, height-80, font, 'S', 35).setOrigin(0.5).setTint(0xFFFFFF).setDepth(10)
@@ -181,26 +157,27 @@ class Play extends Phaser.Scene{
 
         // bullet handling
         bulletCount = 0
-        this.bullet3_inactive = this.add.image(80, 255, 'bullet_inactive', 0).setScale(0.5)
-        this.bullet2_inactive = this.add.image(80, 330, 'bullet_inactive', 0).setScale(0.5)
-        this.bullet1_inactive = this.add.image(80, 405, 'bullet_inactive', 0).setScale(0.5)
+        this.bullet3_inactive = this.add.image(80, 255, 'asset_atlas', 'bullet_inactive', 0).setScale(0.5)
+        this.bullet2_inactive = this.add.image(80, 330, 'asset_atlas', 'bullet_inactive', 0).setScale(0.5)
+        this.bullet1_inactive = this.add.image(80, 405, 'asset_atlas', 'bullet_inactive', 0).setScale(0.5)
         
-        this.bullet3_active = this.add.image(80, 255, 'bullet_active', 0).setScale(0.5).setVisible(false)
-        this.bullet2_active = this.add.image(80, 330, 'bullet_active', 0).setScale(0.5).setVisible(false)
-        this.bullet1_active = this.add.image(80, 405, 'bullet_active', 0).setScale(0.5).setVisible(false)
+        this.bullet3_active = this.add.image(80, 255, 'asset_atlas', 'bullet_active', 0).setScale(0.5).setVisible(false)
+        this.bullet2_active = this.add.image(80, 330, 'asset_atlas', 'bullet_active', 0).setScale(0.5).setVisible(false)
+        this.bullet1_active = this.add.image(80, 405, 'asset_atlas', 'bullet_active', 0).setScale(0.5).setVisible(false)
 
         //reticle
-        reticle = this.add.image(width/2, height/2, 'reticle').setScale(1.5).setDepth(10).setVisible(false)
+        reticle = this.add.image(width/2, height/2, 'asset_atlas', 'reticle').setScale(1.5).setDepth(10).setVisible(false)
         reticle.postFX.addGlow(0xffffff, 1.5, 0)
 
         this.noteGroup = this.add.group({
             runChildUpdate: true    
         });
 
+        let asset_list = ['blue_note', 'cyan_note', 'green_note', 'orange_note', 'pink_note']
         this.noteSpawning = this.time.addEvent({
             delay: -369.1503 * Math.log(0.0666085*speed),
             callback: () => {
-                this.addNote()
+                this.addNote(asset_list)
             },
             loop: true
         })
@@ -273,6 +250,7 @@ class Play extends Phaser.Scene{
             })
         }
         this.spawn_once = false;
+
     }
 
     addEnemy(){
@@ -280,8 +258,7 @@ class Play extends Phaser.Scene{
         this.enemyGroup.add(enemy)
     }
 
-    addNote() {
-        let asset_list = ['blue_note', 'cyan_note', 'green_note', 'orange_note', 'pink_note']
+    addNote(asset_list) {
         let num = Math.floor(Math.random() * 5);
         let note = new Note(this, asset_list[num], 0, speed);
         this.noteGroup.add(note)
@@ -332,7 +309,7 @@ class Play extends Phaser.Scene{
             charge_level += excellentCHARGE
             combo++
             excellentCOUNT++
-            this.flash = this.add.image(note.x, note.y, 'click_flash', 0).setDepth(10)
+            this.flash = this.add.image(note.x, note.y, 'asset_atlas', 'clickflash', 0).setDepth(10)
             this.flash.scaleX = 3
             this.flash.postFX.addGlow(0xFFFFFF, 3, 0)
             this.flash.postFX.addGlow(0xFFD700, 0, 3)
@@ -363,7 +340,7 @@ class Play extends Phaser.Scene{
             charge_level += perfectCHARGE
             combo++
             perfectCOUNT++
-            this.flash = this.add.image(note.x, note.y, 'click_flash', 0).setDepth(10)
+            this.flash = this.add.image(note.x, note.y, 'asset_atlas', 'clickflash', 0).setDepth(10)
             this.flash.scaleX = 3
             this.flash.postFX.addGlow(0xFFFFFF, 3, 0)
             this.flash.postFX.addGlow(0xFFD700, 0, 3)
@@ -394,7 +371,7 @@ class Play extends Phaser.Scene{
             charge_level += goodCHARGE
             combo++
             goodCOUNT++
-            this.flash = this.add.image(note.x, note.y, 'click_flash', 0).setDepth(10)
+            this.flash = this.add.image(note.x, note.y, 'asset_atlas', 'clickflash', 0).setDepth(10)
             this.flash.scaleX = 3
             this.flash.postFX.addGlow(0xFFFFFF, 3, 0)
             this.flash.postFX.addGlow(0xFFD700, 0, 3)
@@ -425,7 +402,7 @@ class Play extends Phaser.Scene{
             combo = 0
             badCOUNT++
             note.destroy()
-            this.flash = this.add.image(note.x, note.y, 'click_flash', 0).setDepth(10)
+            this.flash = this.add.image(note.x, note.y, 'asset_atlas', 'clickflash', 0).setDepth(10)
             this.flash.scaleX = 3
             this.flash.postFX.addGlow(0xFFFFFF, 3, 0)
             this.flash.postFX.addGlow(0xFFD700, 0, 3)
@@ -455,7 +432,7 @@ class Play extends Phaser.Scene{
             charge_level += missCHARGE
             combo = 0
             missCOUNT++ 
-            this.flash = this.add.image(note.x, note.y, 'click_flash', 0).setDepth(10)
+            this.flash = this.add.image(note.x, note.y, 'asset_atlas', 'clickflash', 0).setDepth(10)
             this.flash.scaleX = 3
             this.flash.postFX.addGlow(0xFFFFFF, 3, 0)
             this.flash.postFX.addGlow(0xFFD700, 0, 3)
