@@ -48,6 +48,7 @@ class Play extends Phaser.Scene{
         aimMode = false
         scenePaused = false
         gameOver = false
+        this.speedAltered = false
         
         keyTAB = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TAB)
         keyFIRST = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A)
@@ -182,7 +183,7 @@ class Play extends Phaser.Scene{
             loop: true
         }) 
 
-        this.gameTimer = 60000
+        this.gameTimer = 120000
         this.timeInSeconds = this.gameTimer/1000;
         this.timer = this.add.bitmapText(width/2, 50, font, this.timeInSeconds, 50).setOrigin(0.5).setDepth(10)
         this.clock = this.time.delayedCall(this.gameTimer, () => {
@@ -385,7 +386,7 @@ class Play extends Phaser.Scene{
             }
         }
 
-        // aim mode
+        // reticle
         if (Phaser.Input.Keyboard.JustDown(keySHIFT) && bulletCount > 0){
             if (!aimMode){
                 this.noteSpawning.paused = true
@@ -425,12 +426,15 @@ class Play extends Phaser.Scene{
             charge_level = 0
         }
 
+        // speed control panel
         if(scenePaused){
             Phaser.Actions.Call(this.noteGroup.getChildren(), (note) => note.speed = 0.1)
             if (Phaser.Input.Keyboard.JustDown(keyFIRST) && speed > 1){
                 speed--;
+                this.speedAltered = true
             } else if (Phaser.Input.Keyboard.JustDown(keyFOURTH) && speed < 10){
                 speed++;
+                this.speedAltered = true
             } else if (Phaser.Input.Keyboard.JustDown(keyR)){
                 aimMode = false
                 scenePaused = false
@@ -438,6 +442,7 @@ class Play extends Phaser.Scene{
             }
             this.noteSpawning.delay = -369.1503 * Math.log(0.0666085*speed)
             this.speedTEXT.setText(speed)
+        // aim mode
         } else if(aimMode){
             reticle.setVisible(true)
             Phaser.Actions.Call(this.noteGroup.getChildren(), (note) => note.speed = 0.1)
@@ -485,6 +490,9 @@ class Play extends Phaser.Scene{
                 reticle.setVisible(false)
             }
         } else {
+            if (!this.speedAltered){
+                speed = (1/5)*combo + 1
+            }
             Phaser.Actions.Call(this.noteGroup.getChildren(), (note) => note.speed = speed*2)
             if (Phaser.Input.Keyboard.JustDown(keyFIRST)){
                 this.clickTween(this.keyOneCenter, this.keyOneInner, this.keyOneOuter)

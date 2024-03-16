@@ -20,11 +20,11 @@ class Menu extends Phaser.Scene{
         this.logo = this.add.image(width/2, 220, 'logo').setScale(1)
 
 
-        this.PLAY = this.add.bitmapText(width/2, 400, 'gem', 'PLAY', 64).setOrigin(0.5).setTint(0xA020F0).setScale(1.5);
-        this.TUTORIAL = this.add.bitmapText(width/2, 500, 'gem', 'TUTORIAL', 64).setOrigin(0.5).setTint(0xFFFFFF);
+        this.PLAY = this.add.bitmapText(width/2, 400, 'gem', 'PLAY', 64).setOrigin(0.5).setTint(0xFFFFFF).setScale(1.5);
+        this.TUTORIAL = this.add.bitmapText(width/2, 500, 'gem', 'TUTORIAL', 64).setOrigin(0.5).setTint(0xA020F0);
         this.CREDITS = this.add.bitmapText(width/2, 600, 'gem', 'CREDITS', 64).setOrigin(0.5).setTint(0xA020F0);
 
-        this.add.bitmapText(width/2, 680, 'gem', 'Press SPACE to select', 30).setTint(0xffffff).setOrigin(0.5);
+        this.instructions = this.add.bitmapText(width/2, 680, 'gem', 'Press SPACE to select and arrow keys to move', 30).setTint(0xffffff).setOrigin(0.5);
 
 
         this.cursor = 400
@@ -38,10 +38,14 @@ class Menu extends Phaser.Scene{
                 this.cursor += 100
                 this.PLAY.setScale(1)
                 this.TUTORIAL.setScale(1.2)
+                this.PLAY.setTint(0xA020F0)
+                this.TUTORIAL.setTint(0xFFFFFF)
             } else if (this.cursor == 500){
                 this.cursor += 100
                 this.TUTORIAL.setScale(1)
+                this.TUTORIAL.setTint(0xA020F0)
                 this.CREDITS.setScale(1.2)
+                this.CREDITS.setTint(0xFFFFFF)
             }
         }
 
@@ -49,11 +53,15 @@ class Menu extends Phaser.Scene{
             if (this.cursor == 600){
                 this.cursor -= 100
                 this.CREDITS.setScale(1)
+                this.CREDITS.setTint(0xA020F0)
                 this.TUTORIAL.setScale(1.2)
+                this.TUTORIAL.setTint(0xffffff)
             } else if (this.cursor == 500){
                 this.cursor -= 100
                 this.TUTORIAL.setScale(1)
+                this.TUTORIAL.setTint(0xA020F0)
                 this.PLAY.setScale(1.2)
+                this.PLAY.setTint(0xffffff)
             } 
         }
 
@@ -70,6 +78,7 @@ class Menu extends Phaser.Scene{
                     this.PLAY.setAlpha(0)
                     this.TUTORIAL.setAlpha(0)
                     this.CREDITS.setAlpha(0)
+                    this.instructions.setAlpha(0)
                     this.time.delayedCall(2500, () => {
                         this.scene.start('playScene');
                     }, null, this)
