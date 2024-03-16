@@ -7,17 +7,42 @@ class Menu extends Phaser.Scene{
         this.load.bitmapFont('gem', './assets/gem.png', './assets/gem.xml'); // yoinked from example
         this.load.image('logo', './assets/logo.png');
 
+        this.load.image('background', './assets/makethefakebackground.png')
+
+        // bgm
+        this.load.audio('bgm', './assets/silverwolf_theme_tnbmix.wav')
+        this.load.audio('slow_mode', './assets/slow_mode_bgm.wav')
+
+        // sfx
+        this.load.audio('noteClick', './assets/click.wav')
+        this.load.audio('shoot_sound', './assets/shoot_sound.wav')
+        this.load.audio('enemy_death_sound', './assets/enemy_death_sound.wav')
+
+        // tutorial assets
         this.load.atlas('tutorial', './assets/tutorial/tutorial_sheet.png', './assets/tutorial/tutorial_sheet.json')
+
+        // gif for credits
         this.load.atlas('silverwolf_gif', './assets/silverwolf_gif.png', './assets/silverwolf_gif.json')
     }
 
     create(){
-
+        this.background = this.add.image(width/2, height/2, 'background').setAlpha(0.2)
         this.keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
         this.keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         this.logo = this.add.image(width/2, 220, 'logo').setScale(1)
+
+        this.logo_tween = this.tweens.add({
+            targets: this.logo,
+            duration: 2000,
+            angle: { from: -5, to: 5},
+            ease: 'sine.inout',
+            yoyo: true,
+            repeat: -1
+        })
+
+        this.logo_tween.play()
 
 
         this.PLAY = this.add.bitmapText(width/2, 400, 'gem', 'PLAY', 64).setOrigin(0.5).setTint(0xFFFFFF).setScale(1.2);
@@ -54,6 +79,20 @@ class Menu extends Phaser.Scene{
 
         this.tutorial_tween.pause()
         this.credits_tween.pause()
+
+        this.slow_mode = this.sound.add('slow_mode', { 
+            mute: false,
+            volume: 3,
+            rate: 1,
+            loop: true 
+        });
+
+        this.noteClick = this.sound.add('noteClick', { 
+            volume: .2, 
+            rate: 1,
+            loop: false 
+        });
+        this.slow_mode.play()
     }
 
     update(){
@@ -68,6 +107,7 @@ class Menu extends Phaser.Scene{
                 this.play_tween.reset()
                 this.play_tween.pause()
                 this.tutorial_tween.resume()
+                this.noteClick.play()
             } else if (this.cursor == 500){
                 this.cursor += 100
                 this.TUTORIAL.setScale(1)
@@ -78,6 +118,7 @@ class Menu extends Phaser.Scene{
                 this.tutorial_tween.reset()
                 this.tutorial_tween.pause()
                 this.credits_tween.resume()
+                this.noteClick.play()
             }
         }
 
@@ -92,6 +133,7 @@ class Menu extends Phaser.Scene{
                 this.credits_tween.reset()
                 this.credits_tween.pause()
                 this.tutorial_tween.resume()
+                this.noteClick.play()
             } else if (this.cursor == 500){
                 this.cursor -= 100
                 this.TUTORIAL.setScale(1)
@@ -102,6 +144,7 @@ class Menu extends Phaser.Scene{
                 this.tutorial_tween.reset()
                 this.tutorial_tween.pause()
                 this.play_tween.resume()
+                this.noteClick.play()
             } 
         }
 
@@ -122,15 +165,18 @@ class Menu extends Phaser.Scene{
                     this.TUTORIAL.setAlpha(0)
                     this.CREDITS.setAlpha(0)
                     this.instructions.setAlpha(0)
+                    this.slow_mode.stop()
                     this.time.delayedCall(1500, () => {
                         this.scene.start('playScene');
                     }, null, this)
                     
                     break;
                 case (500):
+                    this.slow_mode.stop()
                     this.scene.start('tutorialScene')
                     break;
                 case (600):
+                    this.slow_mode.stop()
                     this.scene.start('creditsScene')
                     break;
                 default:

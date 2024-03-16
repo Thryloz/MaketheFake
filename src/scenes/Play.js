@@ -28,9 +28,6 @@ class Play extends Phaser.Scene{
         this.load.image('reticle', './assets/reticle.png')
         this.load.image('clickParticle', './assets/clickParticle.png')
 
-
-        this.load.audio('noteClick', ['./assets/back-button-hover.wav']);
-
         this.load.image('enemy1', './assets/enemy sprites/enemy_frame1.png')
         this.load.atlas('enemy_spritesheet', './assets/enemy_spritesheet.png', './assets/enemy_spritesheet.json')
     }
@@ -51,6 +48,26 @@ class Play extends Phaser.Scene{
         gameOverPass = false
         gameOverFail = false
         this.speedAltered = false
+
+        // bgm
+        if (!this.bgm){
+            this.bgm = this.sound.add('bgm', { 
+                mute: false,
+                volume: 0.5,
+                rate: 1,
+                loop: true 
+            });
+        }
+        if (!this.slow_mode){
+            this.slow_mode = this.sound.add('slow_mode', { 
+                mute: false,
+                volume: 1,
+                rate: 1,
+                loop: true 
+            });
+        }
+        this.bgm.play();
+
         
         keyTAB = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TAB)
         keyFIRST = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A)
@@ -124,7 +141,17 @@ class Play extends Phaser.Scene{
         this.lane_COLON = this.add.bitmapText(LANE_FOUR, height-80, font, '\'', 35).setOrigin(0.5).setTint(0xFFFFFF).setDepth(10)
 
         this.noteClick = this.sound.add('noteClick', { 
-            volume: .5, 
+            volume: .2, 
+            rate: 1,
+            loop: false 
+        });
+        this.shoot_sound = this.sound.add('shoot_sound', { 
+            volume: .2, 
+            rate: 1,
+            loop: false 
+        });
+        this.enemy_death_sound = this.sound.add('enemy_death_sound', { 
+            volume: .2, 
             rate: 1,
             loop: false 
         });
@@ -197,15 +224,7 @@ class Play extends Phaser.Scene{
             gameOverPass = true;
         }, null, this)
         
-        /* this.clickParticles = this.add.particles(0, 0, 'clickParticle', {
-            frame: 0,
-            lifespan: 450,
-            speed: { min: 150, max: 250 },
-            scale: { start: 1, end: 0 },
-            gravityY: 500,
-            rotate: 90,
-            emitting: false
-        }) */
+
         if (!this.idle_animation){
             this.idle_animation = this.anims.create({
                 key: 'idle',
@@ -300,7 +319,6 @@ class Play extends Phaser.Scene{
 
     // manages note timing
     noteJudgement(note){
-        
         if ((note.y > visibleZone.y-15 && note.y < visibleZone.y) || (note.y < visibleZone.y+ 15 && note.y > visibleZone.y)){
             this.tweens.add({
                 targets: excellentTEXT,
@@ -479,6 +497,8 @@ class Play extends Phaser.Scene{
                     duration: 100,
                     ease: 'linear'
                 })
+                this.bgm.setVolume(0.1)
+                this.slow_mode.play()
                 scenePaused = true;
             } else {
                 if (!aimMode){
@@ -490,6 +510,8 @@ class Play extends Phaser.Scene{
                     duration: 100,
                     ease: 'linear'
                 })
+                this.bgm.setVolume(0.5)
+                this.slow_mode.stop()
                 scenePaused = false;
             }
         }
@@ -499,6 +521,8 @@ class Play extends Phaser.Scene{
             if (!aimMode){
                 this.noteSpawning.paused = true
                 aimMode = true
+                this.bgm.setVolume(0.1)
+                this.slow_mode.play()
             } else {
                 this.noteSpawning.paused = false
                 reticle.setVisible(false)
@@ -548,6 +572,7 @@ class Play extends Phaser.Scene{
                 scenePaused = false
                 this.scene.restart()
             } else if (Phaser.Input.Keyboard.JustDown(keySPACE)){
+                this.bgm.stop()
                 this.scene.start('menuScene')
             }
             this.noteSpawning.delay = -369.1503 * Math.log(0.0666085*speed)
@@ -579,6 +604,7 @@ class Play extends Phaser.Scene{
                 bulletCount--;
                 aimMode = false
                 this.noteSpawning.paused = false
+                this.shoot_sound.play()
                 switch(bulletCount) {
                     case 2:
                         this.bullet3_active.setVisible(false)
@@ -595,6 +621,7 @@ class Play extends Phaser.Scene{
                 }
                 if (targeted_enemy != null ){
                     score += 500
+                    this.enemy_death_sound.play()
                     targeted_enemy.anims.play('enemy_death')
                     this.time.addEvent({
                         delay: 200,
@@ -604,6 +631,8 @@ class Play extends Phaser.Scene{
                     })
                 }
                 reticle.setVisible(false)
+                this.bgm.setVolume(0.5)
+                this.slow_mode.stop()
             }
         } else {
             if (!this.speedAltered){
@@ -641,12 +670,14 @@ class Play extends Phaser.Scene{
         }
 
         if (gameOverPass){
+            this.bgm.stop()
             aimMode = false
             scenePaused = false
             this.scene.start('scoreScreenScene')
         }
 
         if (gameOverFail){
+            this.bgm.stop()
             if (!this.spawn_once) {
                 aimMode = false
                 scenePaused = false

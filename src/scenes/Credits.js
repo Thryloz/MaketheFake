@@ -26,10 +26,11 @@ class Credits extends Phaser.Scene{
 
 
         let font_size = 24;
-        this.add.bitmapText(300, 120, 'gem', 'Programming and Art by Jim Lee', font_size).setOrigin(0.5).setTint(0xffffff);
-        this.add.bitmapText(430, 170, 'gem', 'Design and Inspiration by Hoyoverse: Honkai Star Rail', font_size).setOrigin(0.5).setTint(0xffffff);
-        this.add.bitmapText(430, 550, 'gem', 'Music by', font_size).setOrigin(0.5).setTint(0xffffff);
-        this.add.bitmapText(500, 600, 'gem', 'And HUGE thanks to Nathan Altice, Nate Laffan, and Jimmy Teng\nfor teaching and to all the playtesters of CMPM120 Winter 2024', 24).setOrigin(0.5).setTint(0xffffff);
+        this.add.bitmapText(332, 120, 'gem', 'Programming, Art, and SFX by Jim Lee', font_size).setOrigin(0.5).setTint(0xffffff);
+        this.add.bitmapText(435, 170, 'gem', 'Design and Inspiration by Hoyoverse: Honkai Star Rail', font_size).setOrigin(0.5).setTint(0xffffff);
+        this.add.bitmapText(390, 550, 'gem', 'BGM: Got a Date? (tnbee mix) by tnbee\nhttps://www.youtube.com/watch?v=RLdkD-D9Asw', font_size).setOrigin(0.5).setTint(0xffffff);
+        this.add.bitmapText(510, 600, 'gem', 'Font name: gem (professor gave it to us and I can\'t find source', font_size).setOrigin(0.5).setTint(0xffffff);
+        this.add.bitmapText(500, 650, 'gem', 'And HUGE thanks to Nathan Altice, Nate Laffan, and Jimmy Teng\nfor teaching and to all the playtesters of CMPM120 Winter 2024', 24).setOrigin(0.5).setTint(0xffffff);
 
 
 
