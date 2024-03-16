@@ -23,6 +23,7 @@ class Play extends Phaser.Scene{
         this.load.image('green_note', './assets/green_note.png')
         this.load.image('orange_note', './assets/orange_note.png')
         this.load.image('pink_note', './assets/pink_note.png')
+        this.load.image('click_flash', './assets/clickflash.png')
 
         this.load.image('reticle', './assets/reticle.png')
         this.load.image('clickParticle', './assets/clickParticle.png')
@@ -47,7 +48,8 @@ class Play extends Phaser.Scene{
         missCOUNT = 0
         aimMode = false
         scenePaused = false
-        gameOver = false
+        gameOverPass = false
+        gameOverFail = false
         this.speedAltered = false
         
         keyTAB = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TAB)
@@ -158,6 +160,7 @@ class Play extends Phaser.Scene{
 
         //reticle
         reticle = this.add.image(width/2, height/2, 'reticle').setScale(1.5).setDepth(10).setVisible(false)
+        reticle.postFX.addGlow(0xffffff, 1.5, 0)
 
         this.noteGroup = this.add.group({
             runChildUpdate: true    
@@ -187,7 +190,7 @@ class Play extends Phaser.Scene{
         this.timeInSeconds = this.gameTimer/1000;
         this.timer = this.add.bitmapText(width/2, 50, font, this.timeInSeconds, 50).setOrigin(0.5).setDepth(10)
         this.clock = this.time.delayedCall(this.gameTimer, () => {
-            gameOver = true;
+            gameOverPass = true;
         }, null, this)
         
         /* this.clickParticles = this.add.particles(0, 0, 'clickParticle', {
@@ -234,6 +237,19 @@ class Play extends Phaser.Scene{
                 }),
             })
         }
+        if (!this.enemy_death){
+            this.enemy_death = this.anims.create({
+                key: 'enemy_death',
+                frameRate: 40,
+                repeat: 0,
+                frames: this.anims.generateFrameNames('enemy_spritesheet', {
+                    prefix: 'enemy_death_',
+                    start: 0,
+                    end: 7
+                }),
+            })
+        }
+        this.spawn_once = false;
     }
 
     addEnemy(){
@@ -280,7 +296,10 @@ class Play extends Phaser.Scene{
 
     // manages note timing
     noteJudgement(note){
-
+        this.flash = this.add.image(note.x, note.y, 'click_flash', 0).setDepth(10)
+        this.flash.scaleX = 3
+        this.flash.postFX.addGlow(0xFFFFFF, 3, 0)
+        this.flash.postFX.addGlow(0xFFD700, 0, 3)
         if ((note.y > visibleZone.y-15 && note.y < visibleZone.y) || (note.y < visibleZone.y+ 15 && note.y > visibleZone.y)){
             this.tweens.add({
                 targets: excellentTEXT,
@@ -350,6 +369,20 @@ class Play extends Phaser.Scene{
             missCOUNT++ 
             note.destroy()
         } 
+        this.add.tween({
+            targets: this.flash,
+            scale: {from: 3, to: 0},
+            alpha: {from: 1, to: 0},
+            duration: 100,
+            ease: 'linear'
+        })
+        this.time.addEvent({
+            delay: 100,
+            callback: () => {
+                this.flash.destroy()
+            },
+        })
+        
         
         if (combo > maxCombo){
             maxCombo = combo
@@ -485,7 +518,13 @@ class Play extends Phaser.Scene{
                 }
                 if (targeted_enemy != null ){
                     score += 500
-                    targeted_enemy.destroy()
+                    targeted_enemy.anims.play('enemy_death')
+                    this.time.addEvent({
+                        delay: 200,
+                        callback: () => {
+                            targeted_enemy.destroy()
+                        },
+                    })
                 }
                 reticle.setVisible(false)
             }
@@ -524,10 +563,42 @@ class Play extends Phaser.Scene{
             }
         }
 
-        if (gameOver){
+        if (gameOverPass){
             aimMode = false
             scenePaused = false
             this.scene.start('scoreScreenScene')
+        }
+
+        if (gameOverFail){
+            if (!this.spawn_once) {
+                aimMode = false
+                scenePaused = false
+                let failScreen = new Enemy(this, 'enemy1', 0, 1)
+                failScreen.setPosition(width/2, height/2)
+                failScreen.setDepth(11)
+                failScreen.setScale(3)
+                if (!this.fail_screen_idle_animation){
+                    this.fail_screen_idle_animation = this.anims.create({
+                        key: 'fail_idle',
+                        frameRate: 48,
+                        repeat: -1,
+                        frames: this.anims.generateFrameNames('enemy_spritesheet', {
+                            prefix: 'enemy_frame',
+                            start: 1,
+                            end: 4
+                        }),
+                    })
+                }
+                failScreen.anims.play('fail_idle')
+                this.spawn_once = true
+
+                this.time.addEvent({
+                    delay: 500,
+                    callback: () => {
+                        this.scene.start('scoreScreenScene')
+                    },
+                })
+            }
         }
     }
 }

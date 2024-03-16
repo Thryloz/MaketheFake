@@ -65,7 +65,8 @@ let speedControlPanel
 let speed
 
 let xPosition, yPosition
-let gameOver = false
+let gameOverPass = false
+let gameOverFail = false
 let reticle
 
 let score

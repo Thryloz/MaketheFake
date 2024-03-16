@@ -8,7 +8,11 @@ class ScoreScreen extends Phaser.Scene{
 
     create(){
         this.font = 'gem'
-        this.STAGE_CLEAR = this.add.bitmapText(350, 150, this.font, 'STAGE CLEAR', 100).setOrigin(0.5).setTint(0x9abce0);
+        if (gameOverFail){
+            this.STAGE_CLEAR = this.add.bitmapText(350, 150, this.font, 'STAGE FAILED', 100).setOrigin(0.5).setTint(0x9abce0);
+        } else if (gameOverPass){
+            this.STAGE_CLEAR = this.add.bitmapText(350, 150, this.font, 'STAGE CLEAR', 100).setOrigin(0.5).setTint(0x9abce0);
+        }
         this.add.rectangle(300, 220, game.config.width, 5, 0xd0cc80, 0.5)
 
         this.accuracy = ((300*excellentCOUNT) + (300 * perfectCOUNT) + (100 * goodCOUNT) + (50 * badCOUNT)) / (300 * amountOfNotes)
@@ -27,19 +31,31 @@ class ScoreScreen extends Phaser.Scene{
         this.space = this.add.bitmapText(700, 600, this.font, 'SPACE to go to Menu', 30).setTint(0xFFFFFF);
         this.r = this.add.bitmapText(700, 650, this.font, 'R to play again', 30).setTint(0xFFFFFF);
 
-        if (this.accuracy > 94.99){
-            this.S = this.add.bitmapText(750, 300, this.font, 'S', 200).setTint(0xFFFFFF);
-        } else if (this.accuracy > 91.99){
-            this.A = this.add.bitmapText(750, 300, this.font, 'A', 200).setTint(0xFFFFFF);
-        } else if (this.accuracy > 84.99){
-            this.B = this.add.bitmapText(750, 300, this.font, 'B', 200).setTint(0xFFFFFF);
-        } else if (this.accuracy > 69.99){
-            this.C = this.add.bitmapText(750, 300, this.font, 'C', 200).setTint(0xFFFFFF);
-        } else if (this.accuracy > 49.99){
-            this.D = this.add.bitmapText(750, 300, this.font, 'D', 200).setTint(0xFFFFFF);
-        } else {
+        this.tweens.add({
+            targets: [this.space, this.r],
+            duration: 1000,
+            alpha: { from: 1, to: 0},
+            yoyo: true,
+            repeat: -1,
+        });
+        if (gameOverFail){
             this.F = this.add.bitmapText(750, 300, this.font, 'F', 200).setTint(0xFFFFFF);
+        } else if (gameOverPass){
+            if (this.accuracy > 94.99){
+                this.S = this.add.bitmapText(750, 300, this.font, 'S', 200).setTint(0xFFFFFF);
+            } else if (this.accuracy > 91.99){
+                this.A = this.add.bitmapText(750, 300, this.font, 'A', 200).setTint(0xFFFFFF);
+            } else if (this.accuracy > 84.99){
+                this.B = this.add.bitmapText(750, 300, this.font, 'B', 200).setTint(0xFFFFFF);
+            } else if (this.accuracy > 69.99){
+                this.C = this.add.bitmapText(750, 300, this.font, 'C', 200).setTint(0xFFFFFF);
+            } else if (this.accuracy > 49.99){
+                this.D = this.add.bitmapText(750, 300, this.font, 'D', 200).setTint(0xFFFFFF);
+            } else {
+                this.F = this.add.bitmapText(750, 300, this.font, 'F', 200).setTint(0xFFFFFF);
+            }
         }
+        
 
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R)

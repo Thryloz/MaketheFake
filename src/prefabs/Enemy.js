@@ -40,14 +40,13 @@ class Enemy extends Phaser.GameObjects.Sprite{
         }
         if (reticle.x > this.x - (this.width * this.scale)/2 && reticle.x < this.x + (this.width * this.scale)/2 && reticle.y > this.y - (this.height * this.scale)/2 && reticle.y < this.y + (this.height * this.scale)/2){
             this.targeted = true
-            console.log(this.targeted)
         } else {
             this.targeted = false
         }
 
 
         if (this.scale > 0.4) {
-            gameOver = true
+            gameOverFail = true
         }
     }
 }
