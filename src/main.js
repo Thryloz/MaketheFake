@@ -1,4 +1,9 @@
 // Jim Lee
+// Make the Fake: Silverwolf's Ultimate
+// Description:
+//      CMPM120 Winter 2024 Final Project. 
+//      The assignment was to create a game based on a fake game shown in other media. 
+//      I chose Silverwolf's ultimate from Honkai: Star Rail.
 
 'use strict';
 
