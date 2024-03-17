@@ -46,10 +46,10 @@ class Play extends Phaser.Scene{
 
         
         keyTAB = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TAB)
-        keyFIRST = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A)
-        keySECOND = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S)
-        keyTHIRD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SEMICOLON)
-        keyFOURTH = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.QUOTES)
+        keyFIRST = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
+        keySECOND = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F)
+        keyTHIRD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J)
+        keyFOURTH = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K)
         keySHIFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT)
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
         keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W)
@@ -72,7 +72,7 @@ class Play extends Phaser.Scene{
         //this.up = this.add.rectangle(width/2, 140, width, 2, 0xFF0000, 0.5)
         //this.point = this.add.image(200,180, 'none')
 
-        visibleZone = this.add.rectangle(game.config.width/2, game.config.height-155, game.config.width, 5, 0xFF0000, 0.5)
+        visibleZone = this.add.rectangle(game.config.width/2, game.config.height-155, game.config.width, 5, 0xFF0000, 0.5).setDepth(10)
         /* excellentZone = this.add.rectangle(visibleZone.x, visibleZone.y, game.config.width, 15, 0x4169E1, 0)
         perfectZone = this.add.rectangle(visibleZone.x, visibleZone.y, game.config.width, 40, 0xA020F0, 0)
         goodZone = this.add.rectangle(visibleZone.x, visibleZone.y, game.config.width, 70, 0xA02AF0, 0)
@@ -111,10 +111,10 @@ class Play extends Phaser.Scene{
         this.keyFourInner_ghost = this.add.image(LANE_FOUR, game.config.height-80, 'asset_atlas', "bluenoteclick_inner").setAlpha(0.3).setScale(0.5)
         this.keyFourOuter_ghost = this.add.image(LANE_FOUR, game.config.height-80, 'asset_atlas', "bluenoteclick_outer").setAlpha(0.3).setScale(0.5)
 
-        this.lane_A = this.add.bitmapText(LANE_ONE, height-80, font, 'A', 35).setOrigin(0.5).setTint(0xFFFFFF).setDepth(10)
-        this.lane_S = this.add.bitmapText(LANE_TWO, height-80, font, 'S', 35).setOrigin(0.5).setTint(0xFFFFFF).setDepth(10)
-        this.lane_SEMICOLON = this.add.bitmapText(LANE_THREE, height-80, font, ';', 35).setOrigin(0.5).setTint(0xFFFFFF).setDepth(10)
-        this.lane_COLON = this.add.bitmapText(LANE_FOUR, height-80, font, '\'', 35).setOrigin(0.5).setTint(0xFFFFFF).setDepth(10)
+        this.lane_A = this.add.bitmapText(LANE_ONE, height-80, font, 'D', 35).setOrigin(0.5).setTint(0xFFFFFF).setDepth(10)
+        this.lane_S = this.add.bitmapText(LANE_TWO, height-80, font, 'F', 35).setOrigin(0.5).setTint(0xFFFFFF).setDepth(10)
+        this.lane_SEMICOLON = this.add.bitmapText(LANE_THREE, height-80, font, 'J', 35).setOrigin(0.5).setTint(0xFFFFFF).setDepth(10)
+        this.lane_COLON = this.add.bitmapText(LANE_FOUR, height-80, font, 'K', 35).setOrigin(0.5).setTint(0xFFFFFF).setDepth(10)
 
         this.noteClick = this.sound.add('noteClick', { 
             volume: .2, 
