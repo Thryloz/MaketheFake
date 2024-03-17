@@ -40,7 +40,7 @@ let LANE_FOUR = game.config.width - (game.config.width/4)
 let scenePaused = false
 let aimMode = false
 
-let keySHIFT, keySPACE, keyESC, keyTAB, keyFIRST, keySECOND, keyTHIRD, keyFOURTH, keyLEFT, keyRIGHT, keyUP, keyDOWN, keyW, keyD, keyR
+let keySHIFT, keySPACE, keyESC, keyTAB, keyFIRST, keySECOND, keyTHIRD, keyFOURTH, keyLEFT, keyRIGHT, keyUP, keyDOWN, keyW, keyD, keyR, keyA, keyS
 let visibleZone, excellentZone, perfectZone, goodZone, badZone, missZone
 let excellentTEXT, perfectTEXT, goodTEXT, badTEXT, missTEXT
 let keyOne, keyTwo, keyThree, keyFour

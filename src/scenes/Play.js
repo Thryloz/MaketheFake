@@ -53,6 +53,8 @@ class Play extends Phaser.Scene{
         keySHIFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT)
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
         keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W)
+        keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A)
+        keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S)
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R)
 
@@ -564,11 +566,11 @@ class Play extends Phaser.Scene{
                 reticle.y -= 5
             }
 
-            if (keySECOND.isDown || keyDOWN.isDown){
+            if (keyS.isDown || keyDOWN.isDown){
                 reticle.y += 5
             }
 
-            if (keyFIRST.isDown || keyLEFT.isDown){
+            if (keyA.isDown || keyLEFT.isDown){
                 reticle.x -= 5
             }
 
