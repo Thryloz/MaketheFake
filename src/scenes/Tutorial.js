@@ -35,7 +35,7 @@ class Tutorial extends Phaser.Scene{
         this.page_1_instructions.setWordTint('TAB.', 1, true, 0xA020F0)
         this.page_1_instructions.setCharacterTint(103, 53, true, 0xff0000)
 
-        this.page_0 = this.add.image(width/2, height/2, 'tutorial', 'tutorial_0')
+        this.page_0 = this.add.image(width/2, height/2, 'tutorial_0')
         this.page_0_instructions = this.add.bitmapText(500, height-100, font, 'Notes will fall down from the top of the screen.\nTap their respective lanes when they reach the RED line.', 35).setOrigin(0.5).setTint(0xFFFFFF)
         this.page_0_instructions.setWordTint('RED', 1, true, 0xff0000)
 

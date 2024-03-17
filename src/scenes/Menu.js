@@ -27,6 +27,7 @@ class Menu extends Phaser.Scene{
 
         // tutorial assets
         this.load.atlas('tutorial', './assets/tutorial/tutorial_sheet.png', './assets/tutorial/tutorial_sheet.json')
+        this.load.image('tutorial_0', './assets/tutorial/tutorial_0.png')
 
         // gif for credits
         this.load.atlas('silverwolf_gif', './assets/silverwolf_gif.png', './assets/silverwolf_gif.json')
